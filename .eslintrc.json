@@ -22,11 +22,12 @@
 		"@typescript-eslint"
 	],
 	"rules": {
+    "eol-last": "off",
     "react-hooks/exhaustive-deps": "off",
     "react/function-component-definition": "off",
     "no-underscore-dangle": "off",
     "no-param-reassign": "off",
-    "linebreak-style": ["warn", "unix"],
+    "linebreak-style": 0,
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".jsx"] }],
     "no-use-before-define": "off",
