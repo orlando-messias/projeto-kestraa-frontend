@@ -1,46 +1,71 @@
-# Getting Started with Create React App
+# Projeto Kestraa
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este repositório é um _boilerplate_ contendo os padrões de código com ESLint, a estrutura de pastas a ser utilizada e os padrões de commit.
 
-## Available Scripts
+## :memo: Padrões de Commit utilizados no projeto
 
-In the project directory, you can run:
+Utilize o commit semântico definido pelas regras abaixo para descrever as intenções de cada commit de seu código:
 
-### `yarn start`
+- ```feat```- indica que seu trecho de código está incluindo um novo recurso ao projeto;
+- ```fix``` - indica que seu trecho de código commitado está solucionando um problema (bug fix);
+- ```refact``` refere-se a mudanças de refatorações do código que não alteram funcionalidades do projeto mas trazem algum tipo de melhoria na performance do código devido a um code review, por exemplo;
+- ```style``` - indica que houve alterações referentes a formatações de código, semicolons, trailing spaces, lint, etc e não inclui alterações em código;
+- ```test``` - são utilizados quando há alterações em testes, seja criando, alterando ou excluindo testes unitários. (Não inclui alterações em código);
+- ```docs```- indica que houve mudanças na documentação, como por exemplo no Readme do repositório;
+- ```build```- utilizados quando houver modificações em arquivos de build e dependências;
+- ```ci```- indica mudanças relacionadas a integração contínua (continuous integration).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**_Exemplo de um Commit:_**
+```feat(kesXXX): Constroi tela de cadastro```
+onde XXX é o número da task no Jira criado no momento da Sprint
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## :file_folder: Organização das pastas
 
-### `yarn test`
+As pastas deste projeto devem ser organizadas conforme exemplo a seguir:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Exemplo árvore de pastas e arquivos :
+```
+├── components
+│   ├── ComponentName01
+│       |── ComponentName01.tsx
+│       |── ComponentName01.styles.ts
+│   ├── ComponentName02
+│       |── ComponentName02.tsx
+│       |── ComponentName02.styles.ts
+├── hooks
+│   ├── useHookName.ts
+│   ├── useHookName.ts
+├── pages
+│   ├── PageName01
+│       |── PageName.tsx
 
-### `yarn build`
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## :traffic_light: Instalação
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+##### **Clone o repositório com git clone**
+```
+$ git clone https://github.com/orlando-messias/projeto-kestraa-boilerplate.git
+```
+##### **Acesse a pasta _projeto-kestraa-boilerplate_**
+```
+$ cd projeto-kestraa-boilerplate
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+##### **Instale todas as dependências com o comando yarn**
+```
+$ yarn
+```
 
-### `yarn eject`
+##### **Rode a aplicação**
+```
+$ yarn start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## :gear: Tecnologias:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- React
+- Typescript
+- ESLint
+#
+Desenvolvido por Orlando Messias [linkedin.com/in/orlando-messias-dev](https://www.linkedin.com/in/orlando-messias-dev)
