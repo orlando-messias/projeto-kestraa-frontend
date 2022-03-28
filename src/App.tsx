@@ -1,6 +1,10 @@
+import AppRoutes from 'Routes';
+import GlobalStyles from './styles/global';
+
 const App = () => (
   <div>
-    <h2>Hello World</h2>
+    <GlobalStyles />
+    <AppRoutes />
   </div>
 );
 
