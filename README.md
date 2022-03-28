@@ -37,7 +37,11 @@ Exemplo árvore de pastas e arquivos :
 │   ├── useHookName.ts
 ├── pages
 │   ├── PageName01
-│       |── PageName.tsx
+│       |── components
+│           |── PageName01Component.tsx
+│           |── PageName01Component.styles.ts
+│       |── PageName01.tsx
+│       |── PageName01.styles.ts
 
 ```
 
@@ -62,10 +66,13 @@ $ yarn
 $ yarn start
 ```
 
+:bulb: No VsCode instale as extensões **ESLint** e **EditorConfig for VS Code** para ajudar na identificação de erros de padrão de escrita do código.
+
 ## :gear: Tecnologias:
 
-- React
-- Typescript
-- ESLint
+- [React](https://reactjs.org)
+- [Typescript](https://www.typescriptlang.org)
+- [Styled-Components](https://www.styled-components.com)
+- [ESLint](https://eslint.org/)
 #
 Desenvolvido por Orlando Messias [linkedin.com/in/orlando-messias-dev](https://www.linkedin.com/in/orlando-messias-dev)
