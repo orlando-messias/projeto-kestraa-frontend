@@ -1,10 +1,12 @@
 import MainPage from 'pages/MainPage/MainPage';
+import MercadoriaPage from 'pages/Mercadoria/MercadoriaPage';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 const AppRoutes = () => (
   <Router>
     <Routes>
       <Route path="/" element={<MainPage />} />
+      <Route path="/cadastro/mercadoria" element={<MercadoriaPage />} />
     </Routes>
   </Router>
 );
