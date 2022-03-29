@@ -22,6 +22,7 @@
 		"@typescript-eslint"
 	],
 	"rules": {
+    "comma-dangle": "off",
     "eol-last": "off",
     "react-hooks/exhaustive-deps": "off",
     "react/function-component-definition": "off",

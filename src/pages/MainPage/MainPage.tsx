@@ -1,8 +1,12 @@
+import Menu from '../../components/Menu/Menu';
 import { Container } from './MainPage.styles';
 
 const MainPage = () => (
   <Container>
-    <h2>Main Page Example</h2>
+    <Menu />
+    <div style={{ padding: '20px' }}>
+      <h2>Main Page</h2>
+    </div>
   </Container>
 );
 
