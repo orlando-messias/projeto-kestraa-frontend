@@ -1,38 +1,15 @@
 import {
   Button,
-  FormControlLabel, Grid, Paper, Switch, TextField
+  FormControlLabel, Grid, Input, InputAdornment, InputLabel, Paper, Switch, TextField
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { Ballot, CheckCircle, Delete } from '@mui/icons-material';
-import { useState } from 'react';
-import { Container, Content, Header } from './MercadoriaForm.styles';
-
-const useStyles = makeStyles((theme) => ({
-  input: {
-    padding: '0px',
-    height: '52px'
-  },
-  inputLabel: {
-    fontSize: '12px',
-    paddingTop: '3px',
-    color: '#c2c2c2'
-  },
-  pageContent: {
-    margin: theme.spacing(2),
-    padding: theme.spacing(3),
-    width: '80%'
-  },
-  pageContentButtons: {
-    margin: theme.spacing(2),
-    padding: theme.spacing(3),
-    width: '80%',
-    display: 'flex',
-    justifyContent: 'flex-end'
-  }
-}));
+import React, { useState } from 'react';
+import {
+  Container, Content, Header, useStyles
+} from './MercadoriaForm.styles';
 
 const MercadoriaForm = () => {
-  const [mercadoria] = useState({
+  const [mercadoria, setMercadoria] = useState({
     cdMercadoria: '',
     cdGrupo: 0,
     apMercadoria: '',
@@ -47,6 +24,13 @@ const MercadoriaForm = () => {
     inAtivo: false
   });
 
+  const handleChangeMercadoria = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMercadoria({
+      ...mercadoria,
+      [event.target.name]: event.target.value
+    });
+  };
+
   const styles = useStyles();
 
   return (
@@ -56,8 +40,8 @@ const MercadoriaForm = () => {
         <span>Cadastro de Mercadoria</span>
       </Header>
       <div style={{ margin: '50px 0 0 50px' }}>
-
         <Paper className={styles.pageContent}>
+          <span style={{ top: '-18px', position: 'relative', color: '#1976D2' }}>Descrição da Mercadoria</span>
           <Content>
             <Grid container spacing={2}>
 
@@ -67,6 +51,7 @@ const MercadoriaForm = () => {
                   name="cdMercadoria"
                   size="small"
                   autoFocus
+                  onChange={handleChangeMercadoria}
                   InputLabelProps={{
                     className: styles.inputLabel
                   }}
@@ -76,7 +61,7 @@ const MercadoriaForm = () => {
                   style={{ marginBottom: '20px' }}
                 />
               </Grid>
-              <Grid item sm={4} md={6}>
+              <Grid item sm={4} md={8}>
                 <TextField
                   size="small"
                   label="Ap Mercadoria"
@@ -171,6 +156,12 @@ const MercadoriaForm = () => {
         </Paper>
 
         <Paper className={styles.pageContent}>
+          <span style={{
+            top: '-18px', position: 'relative', color: '#1976D2'
+          }}
+          >
+            Valores
+          </span>
           <Grid container spacing={2}>
 
             <Grid item sm={12}>
@@ -187,29 +178,19 @@ const MercadoriaForm = () => {
               />
             </Grid>
             <Grid item sm={4}>
-              <TextField
-                label="Valor Peso Liq Unitário"
-                name="vlPesoLiqUnitario"
-                size="medium"
-                InputLabelProps={{
-                  className: styles.inputLabel
-                }}
-                InputProps={{
-                  className: styles.input
-                }}
+              <InputLabel style={{ fontSize: '12px', marginTop: '10px' }}>Valor Peso Liq Unitário</InputLabel>
+              <Input
+                style={{ padding: '12px 0 2px 2px' }}
+                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                placeholder="0.00"
               />
             </Grid>
             <Grid item sm={4}>
-              <TextField
-                label="Valor Peso Liq Apresentação"
-                name="vlPesoLiqUnitarioApresentacao"
-                size="medium"
-                InputLabelProps={{
-                  className: styles.inputLabel
-                }}
-                InputProps={{
-                  className: styles.input
-                }}
+              <InputLabel style={{ fontSize: '12px', marginTop: '10px' }}>Valor Peso Liq Unit Apresentação</InputLabel>
+              <Input
+                style={{ padding: '12px 0 2px 2px' }}
+                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                placeholder="0.00"
               />
             </Grid>
             <Grid item sm={4}>
@@ -234,7 +215,7 @@ const MercadoriaForm = () => {
             <Button
               startIcon={<Delete />}
               style={{
-                backgroundColor: '#f0b536', color: '#FFFFFF', width: '130px', marginLeft: '10px'
+                backgroundColor: '#FF941D', color: '#FFFFFF', width: '130px', marginLeft: '10px'
               }}
             >
               Limpar

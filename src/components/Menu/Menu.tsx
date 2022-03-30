@@ -26,7 +26,6 @@ const Menu = () => {
 
   return (
     <Container>
-
       <List>
         <ListItem button className={styles.item} onClick={() => handleItemClick('capa')}>
           <ListItemIcon>

@@ -1,6 +1,14 @@
 import { makeStyles } from '@material-ui/core';
 import styled from 'styled-components';
 
+export const Container = styled.div`
+  background-color: #F2F2F7;
+  width: 320px;
+  height: 100vh;
+  padding: 10px;
+  border-right: 3px solid #FFFFFF;
+`;
+
 export const useStyles = makeStyles(() => ({
   item: {
     borderRadius: '10px',
@@ -40,11 +48,3 @@ export const useStyles = makeStyles(() => ({
     margin: '5px 0'
   }
 }));
-
-export const Container = styled.div`
-  background-color: #F2F2F7;
-  width: 320px;
-  height: 100vh;
-  padding: 10px;
-  border-right: 3px solid #FFFFFF;
-`;
