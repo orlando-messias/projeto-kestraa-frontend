@@ -43,7 +43,8 @@ export const useStyles = makeStyles(() => ({
 
 export const Container = styled.div`
   background-color: #F2F2F7;
-  width: 300px;
+  width: 320px;
   height: 100vh;
   padding: 10px;
+  border-right: 3px solid #FFFFFF;
 `;

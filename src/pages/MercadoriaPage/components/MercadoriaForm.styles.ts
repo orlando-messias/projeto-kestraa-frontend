@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   padding: 20px 10px;
-  width: 70%;
+  width: 100%;
+  background-color: #F2F2F7;
   `;
 
 export const Header = styled.div`
@@ -11,8 +12,10 @@ export const Header = styled.div`
   font-size: 30px;
   margin: 10px;
   display: flex;
-  /* justify-content: center; */
   align-items: center;
+  background-color: #FFFFFF;
+  padding: 10px 0;
+  width: 100%;
 
   span {
     padding-left: 10px;
@@ -20,6 +23,6 @@ export const Header = styled.div`
 `;
 
 export const Content = styled.div`
-  margin-top: 20px;
-  padding: 12px;
+  /* margin-top: 20px; */
+  padding: 5px 20px 26px 0px;
 `;
