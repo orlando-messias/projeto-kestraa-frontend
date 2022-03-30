@@ -28,6 +28,12 @@ export const Content = styled.div`
   padding: 5px 20px 26px 0px;
 `;
 
+export const Button01 = styled.div`
+  background-color: '#1976D2';
+  color: '#FFFFFF';
+  width: '130px';
+`;
+
 export const useStyles = makeStyles((theme) => ({
   input: {
     padding: '0px',
@@ -49,5 +55,24 @@ export const useStyles = makeStyles((theme) => ({
     width: '80%',
     display: 'flex',
     justifyContent: 'flex-end'
+  },
+  button1: {
+    backgroundColor: '#1976D2',
+    color: '#FFFFFF',
+    width: '130px',
+
+    '&:hover': {
+      backgroundColor: '#4892db'
+    }
+  },
+  button2: {
+    backgroundColor: '#FF941D',
+    color: '#FFFFFF',
+    width: '130px',
+    marginLeft: '10px',
+
+    '&:hover': {
+      backgroundColor: '#f8a444'
+    }
   }
 }));
