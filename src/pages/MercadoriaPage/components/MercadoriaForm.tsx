@@ -7,6 +7,7 @@ import {
   Switch,
   TextField
 } from '@material-ui/core';
+import InputMask from 'react-input-mask';
 import {
   CheckCircle, Delete, FiberNew, Search
 } from '@mui/icons-material';
@@ -41,10 +42,9 @@ const MercadoriaForm = () => {
     txDescricao: yup.string().required('Descrição obrigatória'),
     txDescricaoSap: yup.string().required('Descrição SAP obrigatória'),
     cdUnidMedComerc: yup.string().required('Código Unidade Med Comercial obrigatória'),
-    txDescricaoComerc: yup.string().required('Descrição Comerc obrigatória'),
-    cdNcmSh: yup.string().required('Código Ncm Sh obrigatório'),
+    cdNcmSh: yup.string().required('Código Ncm Sh obrigatório').min(8, 'Formato de código inválido'),
+    cdNaladiNcca: yup.string().required('Código Ncm Sh obrigatório'),
     cdNaladiSh: yup.string().required('Código Naladi Sh obrigatório'),
-    cdNaladiNcca: yup.string().required('Código Naladi NCCA obrigatório'),
     vlPesoLiqUnitario: yup.string().required('Peso Líquido Unit obrigatório'),
     vlPesoLiqUnitarioApresentacao: yup.string().required('Peso Líquido Unit Apresentação obrigatório'),
   });
@@ -62,6 +62,8 @@ const MercadoriaForm = () => {
       update(values);
     },
   });
+
+  // const onlyNumbers = (str: any) => str.replace(/[^0-9]/g, '');
 
   const styles = useStyles();
 
@@ -178,23 +180,29 @@ const MercadoriaForm = () => {
                   />
                 </Grid>
                 <Grid item sm={3} md={3}>
-                  <TextField
-                    size="small"
-                    label="Cod NCM SH"
-                    name="cdNcmSh"
-                    variant="outlined"
+                  <InputMask
+                    mask="9999.99.99"
                     onChange={formik.handleChange}
                     value={formik.values.cdNcmSh}
-                    fullWidth
-                    InputLabelProps={{
-                      className: styles.inputLabel
-                    }}
-                    InputProps={{
-                      className: styles.input
-                    }}
-                    error={formik.touched.cdNcmSh && Boolean(formik.errors.cdNcmSh)}
-                    helperText={formik.touched.cdNcmSh && formik.errors.cdNcmSh}
-                  />
+                  >
+                    {() => (
+                      <TextField
+                        label="Cod NCM SH"
+                        name="cdNcmSh"
+                        variant="outlined"
+                        size="small"
+                        fullWidth
+                        InputLabelProps={{
+                          className: styles.inputLabel
+                        }}
+                        InputProps={{
+                          className: styles.input
+                        }}
+                        error={formik.touched.cdNcmSh && Boolean(formik.errors.cdNcmSh)}
+                        helperText={formik.touched.cdNcmSh && formik.errors.cdNcmSh}
+                      />
+                    )}
+                  </InputMask>
                 </Grid>
                 <Grid item sm={3} md={3}>
                   <TextField
@@ -252,19 +260,6 @@ const MercadoriaForm = () => {
                     })}
                     noOptionsText="Digite um código válido"
                   />
-                  {/* <TextField
-                    label="Cod Naladi NCCA"
-                    name="cdNaladiNcca"
-                    size="small"
-                    variant="outlined"
-                    fullWidth
-                    InputLabelProps={{
-                      className: styles.inputLabel
-                    }}
-                    InputProps={{
-                      className: styles.input
-                    }}
-                  /> */}
                 </Grid>
 
               </Grid>
