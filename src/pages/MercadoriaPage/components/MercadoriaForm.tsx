@@ -1,14 +1,23 @@
 import {
   Button,
-  FormControlLabel, Grid, Input, InputAdornment, InputLabel, Paper, Switch, TextField
+  FormControlLabel,
+  Grid,
+  InputAdornment,
+  Paper,
+  Switch,
+  TextField
 } from '@material-ui/core';
-import { CheckCircle, Delete, FiberNew } from '@mui/icons-material';
+import {
+  CheckCircle, Delete, FiberNew, Search
+} from '@mui/icons-material';
 import React, { useState } from 'react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import {
   Container, Content, Header, useStyles
 } from './MercadoriaForm.styles';
+import data from './data.json';
 
 const MercadoriaForm = () => {
   const [mercadoria] = useState({
@@ -21,17 +30,26 @@ const MercadoriaForm = () => {
     cdNcmSh: '',
     cdNaladiSh: '',
     cdNaladiNcca: '',
-    vlPesoLiqUnitario: 0.0,
-    vlPesoLiqUnitarioApresentacao: 0.0,
+    vlPesoLiqUnitario: '',
+    vlPesoLiqUnitarioApresentacao: '',
     inAtivo: false
   });
 
   const cadastroFormSchema = yup.object().shape({
-    cdMercadoria: yup.string().required('obrigatorio'),
-    apMercadoria: yup.string().required('Ap Mercadoria obrigatório.').min(3, 'No mínimo 3 caracteres.'),
+    cdMercadoria: yup.string().required('Código da mercadoria obrigatório'),
+    apMercadoria: yup.string().required('Apelido da Mercadoria obrigatório').max(50, 'Máximo 50 caracteres'),
+    txDescricao: yup.string().required('Descrição obrigatória'),
+    txDescricaoSap: yup.string().required('Descrição SAP obrigatória'),
+    cdUnidMedComerc: yup.string().required('Código Unidade Med Comercial obrigatória'),
+    txDescricaoComerc: yup.string().required('Descrição Comerc obrigatória'),
+    cdNcmSh: yup.string().required('Código Ncm Sh obrigatório'),
+    cdNaladiSh: yup.string().required('Código Naladi Sh obrigatório'),
+    cdNaladiNcca: yup.string().required('Código Naladi NCCA obrigatório'),
+    vlPesoLiqUnitario: yup.string().required('Peso Líquido Unit obrigatório'),
+    vlPesoLiqUnitarioApresentacao: yup.string().required('Peso Líquido Unit Apresentação obrigatório'),
   });
 
-  const update = (values: any) => {
+  const update = async (values: any) => {
     console.log(values);
   };
 
@@ -64,6 +82,7 @@ const MercadoriaForm = () => {
                   <TextField
                     label="Cod Mercadoria"
                     name="cdMercadoria"
+                    variant="outlined"
                     size="small"
                     autoFocus
                     InputLabelProps={{
@@ -71,18 +90,14 @@ const MercadoriaForm = () => {
                     }}
                     onChange={formik.handleChange}
                     value={formik.values.cdMercadoria}
-                    // InputProps={{
-                    //   className: styles.input
-                    // }}
-                    style={{ marginBottom: '20px' }}
-                    // error={formik.touched.cdMercadoria && Boolean(formik.errors.cdMercadoria)}
-                    // helperText={formik.touched.cdMercadoria && formik.errors.cdMercadoria}
+                    error={formik.touched.cdMercadoria && Boolean(formik.errors.cdMercadoria)}
+                    helperText={formik.touched.cdMercadoria && formik.errors.cdMercadoria}
                   />
                 </Grid>
-                <Grid item sm={4} md={8}>
+                <Grid item sm={12}>
                   <TextField
                     size="small"
-                    label="Ap Mercadoria"
+                    label="Apelido Mercadoria"
                     name="apMercadoria"
                     variant="outlined"
                     onChange={formik.handleChange}
@@ -91,86 +106,165 @@ const MercadoriaForm = () => {
                       className: styles.inputLabel
                     }}
                     InputProps={{
-                      className: styles.input
+                      className: styles.inputMedium
                     }}
-                    fullWidth
                     error={formik.touched.apMercadoria && Boolean(formik.errors.apMercadoria)}
                     helperText={formik.touched.apMercadoria && formik.errors.apMercadoria}
                   />
                 </Grid>
-                <Grid item sm={4} md={3}>
+                <Grid item sm={6} md={6}>
                   <TextField
-                    size="small"
-                    label="Taxa Descrição"
+                    label="Descrição"
                     name="txDescricao"
+                    multiline
+                    rows={6}
+                    maxRows={6}
                     variant="outlined"
+                    onChange={formik.handleChange}
+                    value={formik.values.txDescricao}
+                    // style={{ width: '560px' }}
                     InputLabelProps={{
                       className: styles.inputLabel
-                    }}
-                    InputProps={{
-                      className: styles.input
-                    }}
-                  />
-                </Grid>
-                <Grid item sm={4} md={4}>
-                  <TextField
-                    size="small"
-                    label="Taxa Descrição Sap"
-                    name="txDescricaoSap"
-                    variant="outlined"
-                    InputLabelProps={{
-                      className: styles.inputLabel
-                    }}
-                    InputProps={{
-                      className: styles.input
                     }}
                     fullWidth
+                    inputProps={{
+                      maxLength: 600
+                    }}
+                    error={formik.touched.txDescricao && Boolean(formik.errors.txDescricao)}
+                    helperText={formik.touched.txDescricao && formik.errors.txDescricao}
                   />
                 </Grid>
-                <Grid item sm={4} md={4}>
+                <Grid item sm={6} md={6}>
+                  <TextField
+                    label="Descrição SAP"
+                    name="txDescricaoSap"
+                    multiline
+                    rows={6}
+                    maxRows={6}
+                    variant="outlined"
+                    onChange={formik.handleChange}
+                    value={formik.values.txDescricaoSap}
+                    // style={{ width: '560px' }}
+                    fullWidth
+                    InputLabelProps={{
+                      className: styles.inputLabel
+                    }}
+                    inputProps={{
+                      maxLength: 600
+                    }}
+                    error={formik.touched.txDescricaoSap && Boolean(formik.errors.txDescricaoSap)}
+                    helperText={formik.touched.txDescricaoSap && formik.errors.txDescricaoSap}
+                  />
+                </Grid>
+                <Grid item sm={3} md={3}>
                   <TextField
                     size="small"
                     label="Cod Unidade Med Comercial"
-                    name="cdUnidMedComercial"
+                    name="cdUnidMedComerc"
                     variant="outlined"
+                    onChange={formik.handleChange}
+                    value={formik.values.cdUnidMedComerc}
+                    fullWidth
                     InputLabelProps={{
                       className: styles.inputLabel
                     }}
                     InputProps={{
                       className: styles.input
                     }}
-                    fullWidth
+                    error={formik.touched.cdUnidMedComerc
+                      && Boolean(formik.errors.cdUnidMedComerc)}
+                    helperText={formik.touched.cdUnidMedComerc
+                      && formik.errors.cdUnidMedComerc}
                   />
                 </Grid>
-                <Grid item sm={4} md={4}>
+                <Grid item sm={3} md={3}>
                   <TextField
                     size="small"
                     label="Cod NCM SH"
-                    name="cdNcmSH"
+                    name="cdNcmSh"
                     variant="outlined"
+                    onChange={formik.handleChange}
+                    value={formik.values.cdNcmSh}
+                    fullWidth
                     InputLabelProps={{
                       className: styles.inputLabel
                     }}
                     InputProps={{
                       className: styles.input
                     }}
-                    fullWidth
+                    error={formik.touched.cdNcmSh && Boolean(formik.errors.cdNcmSh)}
+                    helperText={formik.touched.cdNcmSh && formik.errors.cdNcmSh}
                   />
                 </Grid>
-                <Grid item sm={4} md={4}>
+                <Grid item sm={3} md={3}>
                   <TextField
                     size="small"
                     label="Cod Naladi SH"
                     name="cdNaladiSh"
                     variant="outlined"
+                    onChange={formik.handleChange}
+                    value={formik.values.cdNaladiSh}
+                    fullWidth
                     InputLabelProps={{
                       className: styles.inputLabel
                     }}
                     InputProps={{
                       className: styles.input
                     }}
-                    fullWidth
+                    error={formik.touched.cdNaladiSh && Boolean(formik.errors.cdNaladiSh)}
+                    helperText={formik.touched.cdNaladiSh && formik.errors.cdNaladiSh}
                   />
+                </Grid>
+                <Grid item sm={3}>
+                  <Autocomplete
+                    options={data}
+                    size="small"
+                    getOptionLabel={(option) => `${option.cod}`}
+                    isOptionEqualToValue={(option, value) => option.cod === value.cod}
+                    onChange={formik.handleChange}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Cod Naladi NCCA"
+                        variant="outlined"
+                        name="cdNaladiNcca"
+                        onChange={formik.handleChange}
+                        value={formik.values.cdNaladiNcca}
+                        // eslint-disable-next-line max-len
+                        InputProps={{
+                          ...params.InputProps,
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <Search style={{ color: '#c2c2c2', position: 'relative', right: '-30px' }} />
+                            </InputAdornment>
+                          )
+                        }}
+                        InputLabelProps={{
+                          className: styles.inputLabel
+                        }}
+                        error={formik.touched.cdNaladiNcca && Boolean(formik.errors.cdNaladiNcca)}
+                        helperText={formik.touched.cdNaladiNcca && formik.errors.cdNaladiNcca}
+                      />
+                    )}
+                    filterOptions={createFilterOptions({
+                      matchFrom: 'start',
+                      stringify: (option) => option.cod
+                    })}
+                    noOptionsText="Digite um código válido"
+                  />
+                  {/* <TextField
+                    label="Cod Naladi NCCA"
+                    name="cdNaladiNcca"
+                    size="small"
+                    variant="outlined"
+                    fullWidth
+                    InputLabelProps={{
+                      className: styles.inputLabel
+                    }}
+                    InputProps={{
+                      className: styles.input
+                    }}
+                  /> */}
                 </Grid>
 
               </Grid>
@@ -185,34 +279,47 @@ const MercadoriaForm = () => {
               Valores
             </span>
             <Grid container spacing={2}>
-
-              <Grid item sm={12}>
+              <Grid item sm={4}>
                 <TextField
-                  label="Cod Naladi NCCA"
-                  name="cdNaladiNcca"
-                  size="medium"
+                  label="Valor Peso Liq Unitário"
+                  name="vlPesoLiqUnitario"
+                  placeholder="0.00000"
+                  variant="outlined"
+                  onChange={formik.handleChange}
+                  value={formik.values.vlPesoLiqUnitario}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="start">Kg</InputAdornment>
+                    )
+                  }}
                   InputLabelProps={{
                     className: styles.inputLabel
                   }}
+                  error={formik.touched.vlPesoLiqUnitario
+                    && Boolean(formik.errors.vlPesoLiqUnitario)}
+                  helperText={formik.touched.vlPesoLiqUnitario && formik.errors.vlPesoLiqUnitario}
+                />
+              </Grid>
+              <Grid item sm={4}>
+                <TextField
+                  label="Valor Peso Liq Unit Apresentação"
+                  name="vlPesoLiqUnitarioApresentacao"
+                  placeholder="0.00000"
+                  variant="outlined"
+                  onChange={formik.handleChange}
+                  value={formik.values.vlPesoLiqUnitarioApresentacao}
                   InputProps={{
-                    className: styles.input
+                    endAdornment: (
+                      <InputAdornment position="start">Kg</InputAdornment>
+                    )
                   }}
-                />
-              </Grid>
-              <Grid item sm={4}>
-                <InputLabel style={{ fontSize: '12px', marginTop: '10px' }}>Valor Peso Liq Unitário</InputLabel>
-                <Input
-                  style={{ padding: '12px 0 2px 2px' }}
-                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                  placeholder="0.00"
-                />
-              </Grid>
-              <Grid item sm={4}>
-                <InputLabel style={{ fontSize: '12px', marginTop: '10px' }}>Valor Peso Liq Unit Apresentação</InputLabel>
-                <Input
-                  style={{ padding: '12px 0 2px 2px' }}
-                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                  placeholder="0.00"
+                  InputLabelProps={{
+                    className: styles.inputLabel
+                  }}
+                  error={formik.touched.vlPesoLiqUnitarioApresentacao
+                    && Boolean(formik.errors.vlPesoLiqUnitarioApresentacao)}
+                  helperText={formik.touched.vlPesoLiqUnitarioApresentacao
+                    && formik.errors.vlPesoLiqUnitarioApresentacao}
                 />
               </Grid>
               <Grid item sm={4}>

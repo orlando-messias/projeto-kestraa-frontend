@@ -37,7 +37,12 @@ export const Button01 = styled.div`
 export const useStyles = makeStyles((theme) => ({
   input: {
     padding: '0px',
-    height: '52px'
+    height: '50px'
+  },
+  inputMedium: {
+    padding: '0px',
+    height: '50px',
+    width: '560px'
   },
   inputLabel: {
     fontSize: '12px',
@@ -57,7 +62,7 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end'
   },
   button1: {
-    backgroundColor: '#1976D2',
+    backgroundColor: '#1368B4',
     color: '#FFFFFF',
     width: '130px',
 
