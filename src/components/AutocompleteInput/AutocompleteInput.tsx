@@ -1,5 +1,7 @@
 import { Close, Search } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
+import ModalMercadoriaForm from 'pages/MercadoriaPage/components/ModalMercadoriaForm/ModalMercadoriaForm';
+import { Button } from '@material-ui/core';
 import { DataItem, DataResult, SearchInput } from './Autocomplete.styles';
 import data from '../../pages/MercadoriaPage/components/data.json';
 
@@ -11,6 +13,11 @@ interface Item {
 const AutocompleteInput = () => {
   const [inputSearch, setInputSearch] = useState('');
   const [filterSearch, setFilterSearch] = useState<Item[] | null>([]);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleModal = () => {
+    setShowModal(!showModal);
+  };
 
   useEffect(() => {
     if (inputSearch === '') setFilterSearch([]);
@@ -61,6 +68,10 @@ const AutocompleteInput = () => {
           ))}
         </DataResult>
       )}
+
+      <Button onClick={handleModal}>Modal</Button>
+
+      <ModalMercadoriaForm showModal={showModal} handleModal={handleModal} />
     </>
   );
 };
