@@ -1,34 +1,26 @@
 [
   {
-    "id": "1",
-    "cod": "A3012"
+    "codigo": "00001501",
+    "descricao": "DEPAROS NAVAIS"
   },
   {
-    "id": "2",
-    "cod": "DC120"
+    "codigo": "01059200",
+    "descricao": "Galos e galinhas de peso não superior a 2.000g"
   },
   {
-    "id": "3",
-    "cod": "H33"
+    "codigo": "00001501",
+    "descricao": "REPRODUCTORES DE RAZA PURA"
   },
   {
-    "id": "4",
-    "cod": "BCC08"
+    "codigo": "02041000",
+    "descricao": "Carcaças e meias-carcaças de cordeiro, frescas ou refrigeradas"
   },
   {
-    "id": "5",
-    "cod": "Z3A91"
+    "codigo": "02072400",
+    "descricao": "Não cortadas em pedaços, frescas ou refrigeradas"
   },
   {
-    "id": "6",
-    "cod": "A1110"
-  },
-  {
-    "id": "7",
-    "cod": "AF1120"
-  },
-  {
-    "id": "8",
-    "cod": "GA33"
+    "codigo": "00001501",
+    "descricao": "Fígados gordos ('foies gras'), frescos"
   }
 ]

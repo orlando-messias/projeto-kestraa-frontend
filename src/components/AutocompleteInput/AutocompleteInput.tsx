@@ -1,13 +1,12 @@
 import { Close, Search } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import ModalMercadoriaForm from 'pages/MercadoriaPage/components/ModalMercadoriaForm/ModalMercadoriaForm';
-import { Button } from '@material-ui/core';
 import { DataItem, DataResult, SearchInput } from './Autocomplete.styles';
 import data from '../../pages/MercadoriaPage/components/data.json';
 
 interface Item {
-  id: string;
-  cod: string
+  codigo: string;
+  descricao: string;
 }
 
 const AutocompleteInput = () => {
@@ -26,15 +25,16 @@ const AutocompleteInput = () => {
   const handleFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
     const v = event.target.value;
 
-    const newFilter = data.filter((value) => value.cod.toLowerCase()
-      .includes(v.toLocaleLowerCase()));
+    const newFilter = data.filter((value) => value.codigo.toLowerCase()
+      .includes(v.toLocaleLowerCase())
+      || value.descricao.toLocaleLowerCase().includes(v.toLocaleLowerCase()));
     setInputSearch(event.target.value);
 
     setFilterSearch(newFilter);
   };
 
   const handleClickAutocomplete = (value: Item) => {
-    setInputSearch(value.cod);
+    setInputSearch(`${value.codigo} - ${value.descricao}`);
     setFilterSearch([]);
   };
 
@@ -43,35 +43,59 @@ const AutocompleteInput = () => {
     setFilterSearch([]);
   };
 
+  const handleChangeValue = (value: string) => {
+    setInputSearch(value);
+    setFilterSearch([]);
+    handleModal();
+  };
+
   return (
     <>
       <SearchInput>
-        <Search className="icon" />
+        {/* <Search className="icon" /> */}
         <input
           type="text"
           placeholder="Pesquisar..."
           value={inputSearch}
           onChange={handleFilter}
         />
-        {inputSearch !== ''
-          ? <Close style={{ color: '#c2c2c2', fontSize: '18px', fontWeight: 'bold' }} onClick={clearText} />
-          : ''}
+        <div style={{ display: 'flex' }}>
+          {inputSearch !== ''
+            ? (
+              <Close
+                style={{
+                  color: '#c2c2c2',
+                  fontSize: '18px',
+                  fontWeight: 'bold',
+                }}
+                onClick={clearText}
+              />
+            )
+            : ''}
+        </div>
+        <Search style={{ fontSize: '22px', cursor: 'pointer' }} onClick={handleModal} />
       </SearchInput>
 
       {filterSearch && (
         <DataResult>
           {filterSearch.map((value) => (
-            <DataItem key={value.id} onClick={() => handleClickAutocomplete(value)}>
+            <DataItem onClick={() => handleClickAutocomplete(value)}>
               <Search style={{ color: '#c2c2c2' }} />
-              <p>{value.cod}</p>
+              <p>{value.codigo}</p>
             </DataItem>
           ))}
         </DataResult>
       )}
 
-      <Button onClick={handleModal}>Modal</Button>
+      <br />
 
-      <ModalMercadoriaForm showModal={showModal} handleModal={handleModal} />
+      <ModalMercadoriaForm
+        showModal={showModal}
+        handleModal={handleModal}
+        handleChangeValue={handleChangeValue}
+      />
+
+      {console.log(filterSearch)}
     </>
   );
 };

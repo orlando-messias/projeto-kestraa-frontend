@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   modalContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
     width: '100vw',
     height: '100vh',
     position: 'fixed',
@@ -15,16 +15,18 @@ const useStyles = makeStyles((theme) => ({
   ModalContent: {
     padding: '10px 30px 10px 30px',
     position: 'absolute',
-    width: 800,
+    width: 1100,
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
+    // border: '2px solid #000',
     verticalAlign: 'middle',
     animation: `$myEffect 600ms ${theme.transitions.easing.easeInOut}`,
     left: '50%',
-    marginLeft: -400,
-    // overflowY: 'scroll',
+    marginLeft: -550,
     display: 'inline-block',
-    height: 600,
+    height: 700,
+    justifyContent: 'center',
+    borderRadius: '10px',
+    boxShadow: '2px 3px 4px #c2c2c2'
   },
   '@keyframes myEffect': {
     '0%': {
@@ -40,17 +42,21 @@ const useStyles = makeStyles((theme) => ({
   modalTitle: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     borderBottom: '1px solid #c2c2c2',
-    paddingBottom: '10px'
+    // paddingBottom: '15px',
+    height: '50px',
+    color: '#1976D2'
   },
   buttonClose: {
     color: '#d10d0d',
     margin: '0',
-    padding: '0',
-    fontWeight: 'bold',
+    padding: '5px 0',
+    borderRadius: '10px',
+    fontSize: '18px',
 
     '&:hover': {
-      backgroundColor: '#fdefef'
+      backgroundColor: '#F5F5F5'
     }
   }
 

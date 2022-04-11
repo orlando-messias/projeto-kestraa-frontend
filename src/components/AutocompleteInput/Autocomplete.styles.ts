@@ -6,7 +6,7 @@ export const SearchInput = styled.div`
   background-color: white;
   border: 1px solid #c2c2c2;
   border-radius: 4px;
-  width: 360px;
+  width: 660px;
   height: 50px;
   gap: 20px;
   font-family: 'DM Sans', sans-serif;

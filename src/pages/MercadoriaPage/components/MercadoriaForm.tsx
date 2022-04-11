@@ -43,8 +43,8 @@ const MercadoriaForm = () => {
     txDescricaoSap: yup.string().required('Descrição SAP obrigatória'),
     cdUnidMedComerc: yup.string().required('Código Unidade Med Comercial obrigatória'),
     cdNcmSh: yup.string().required('Código Ncm Sh obrigatório').min(8, 'Formato de código inválido'),
-    cdNaladiNcca: yup.string().required('Código Ncm Sh obrigatório'),
-    cdNaladiSh: yup.string().required('Código Naladi Sh obrigatório'),
+    cdNaladiSh: yup.string().required('Código Naladi SH obrigatório'),
+    cdNaladiNcca: yup.string().required('Código Naladi NCCA obrigatório'),
     vlPesoLiqUnitario: yup.string().required('Peso Líquido Unit obrigatório'),
     vlPesoLiqUnitarioApresentacao: yup.string().required('Peso Líquido Unit Apresentação obrigatório'),
   });
@@ -227,8 +227,8 @@ const MercadoriaForm = () => {
                   <Autocomplete
                     options={data}
                     size="small"
-                    getOptionLabel={(option) => `${option.cod}`}
-                    isOptionEqualToValue={(option, value) => option.cod === value.cod}
+                    getOptionLabel={(option) => `${option.codigo}`}
+                    isOptionEqualToValue={(option, value) => option.codigo === value.codigo}
                     onChange={formik.handleChange}
                     renderInput={(params) => (
                       <TextField
@@ -256,7 +256,7 @@ const MercadoriaForm = () => {
                     )}
                     filterOptions={createFilterOptions({
                       matchFrom: 'start',
-                      stringify: (option) => option.cod
+                      stringify: (option) => option.codigo
                     })}
                     noOptionsText="Digite um código válido"
                   />
