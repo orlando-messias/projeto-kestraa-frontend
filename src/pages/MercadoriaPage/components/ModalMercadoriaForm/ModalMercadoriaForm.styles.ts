@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   modalContainer: {
@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     width: 1100,
     backgroundColor: theme.palette.background.paper,
-    // border: '2px solid #000',
     verticalAlign: 'middle',
     animation: `$myEffect 600ms ${theme.transitions.easing.easeInOut}`,
     left: '50%',
@@ -44,16 +43,18 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderBottom: '1px solid #c2c2c2',
-    // paddingBottom: '15px',
     height: '50px',
     color: '#1976D2'
   },
   buttonClose: {
     color: '#d10d0d',
     margin: '0',
-    padding: '5px 0',
-    borderRadius: '10px',
+    padding: '10px 16px',
+    borderRadius: '50%',
+    border: 'none',
+    backgroundColor: 'transparent',
     fontSize: '18px',
+    cursor: 'pointer',
 
     '&:hover': {
       backgroundColor: '#F5F5F5'

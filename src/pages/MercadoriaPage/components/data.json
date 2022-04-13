@@ -1,26 +1,34 @@
 [
   {
     "codigo": "00001501",
-    "descricao": "DEPAROS NAVAIS"
+    "descricao": "Deparos Navais"
   },
   {
     "codigo": "01059200",
     "descricao": "Galos e galinhas de peso não superior a 2.000g"
   },
   {
-    "codigo": "00001501",
-    "descricao": "REPRODUCTORES DE RAZA PURA"
+    "codigo": "00001660",
+    "descricao": "Reproductores de raza pura"
   },
   {
     "codigo": "02041000",
-    "descricao": "Carcaças e meias-carcaças de cordeiro, frescas ou refrigeradas"
+    "descricao": "Carcaças e meias-carcaças de cordeiro, suíno e aves, frescas ou refrigeradas, grandes quantidades"
   },
   {
     "codigo": "02072400",
     "descricao": "Não cortadas em pedaços, frescas ou refrigeradas"
   },
   {
-    "codigo": "00001501",
+    "codigo": "0001502",
     "descricao": "Fígados gordos ('foies gras'), frescos"
+  },
+  {
+    "codigo": "0007101",
+    "descricao": "Óleos combustíveis de petróleo"
+  },
+  {
+    "codigo": "0001903",
+    "descricao": "Demais produtos – Indústria de Transformação"
   }
 ]

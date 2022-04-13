@@ -347,7 +347,6 @@ const MercadoriaForm = () => {
         </form>
       </div>
 
-      {console.log(mercadoria)}
     </Container>
   );
 };

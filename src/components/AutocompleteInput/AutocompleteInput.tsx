@@ -26,8 +26,8 @@ const AutocompleteInput = () => {
     const v = event.target.value;
 
     const newFilter = data.filter((value) => value.codigo.toLowerCase()
-      .includes(v.toLocaleLowerCase())
-      || value.descricao.toLocaleLowerCase().includes(v.toLocaleLowerCase()));
+      .includes(v.toLowerCase())
+      || value.descricao.toLowerCase().includes(v.toLowerCase()));
     setInputSearch(event.target.value);
 
     setFilterSearch(newFilter);
@@ -50,7 +50,7 @@ const AutocompleteInput = () => {
   };
 
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <SearchInput>
         {/* <Search className="icon" /> */}
         <input
@@ -67,6 +67,7 @@ const AutocompleteInput = () => {
                   color: '#c2c2c2',
                   fontSize: '18px',
                   fontWeight: 'bold',
+                  cursor: 'pointer'
                 }}
                 onClick={clearText}
               />
@@ -79,9 +80,9 @@ const AutocompleteInput = () => {
       {filterSearch && (
         <DataResult>
           {filterSearch.map((value) => (
-            <DataItem onClick={() => handleClickAutocomplete(value)}>
+            <DataItem key={value.codigo} onClick={() => handleClickAutocomplete(value)}>
               <Search style={{ color: '#c2c2c2' }} />
-              <p>{value.codigo}</p>
+              <p>{`${value.codigo} - ${value.descricao}`}</p>
             </DataItem>
           ))}
         </DataResult>
@@ -95,8 +96,7 @@ const AutocompleteInput = () => {
         handleChangeValue={handleChangeValue}
       />
 
-      {console.log(filterSearch)}
-    </>
+    </div>
   );
 };
 

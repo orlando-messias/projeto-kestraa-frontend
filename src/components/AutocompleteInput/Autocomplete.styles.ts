@@ -17,6 +17,7 @@ export const SearchInput = styled.div`
     outline: 0;
     font-size: 16px;
     width: 90%;
+    padding: 5px;
   }
 
   .icon {
@@ -30,6 +31,8 @@ export const DataResult = styled.div`
   max-height: 300px;
   overflow: hidden;
   overflow-y: auto;
+  width: 650px;
+  border-radius: 5px;
 
   ::-webkit-scrollbar {
     display: none;
@@ -42,6 +45,7 @@ export const DataItem = styled.div`
   padding: 10px;
   gap: 16px;
   cursor: pointer;
+  width: 660px;
 
   &:hover {
     background-color: #e9e9e9;
