@@ -13,14 +13,26 @@ const AutocompleteInput = () => {
   const [inputSearch, setInputSearch] = useState('');
   const [filterSearch, setFilterSearch] = useState<Item[] | null>([]);
   const [showModal, setShowModal] = useState(false);
+  const [teste, setTeste] = useState(false);
+  const [focus, setFocus] = useState(false);
 
   const handleModal = () => {
     setShowModal(!showModal);
   };
 
   useEffect(() => {
-    if (inputSearch === '') setFilterSearch([]);
+    if (inputSearch === '') {
+      setFilterSearch([]);
+    }
   }, [inputSearch]);
+
+  useEffect(() => {
+    if (filterSearch?.length) {
+      setTeste(true);
+    } else {
+      setTeste(false);
+    }
+  }, [filterSearch]);
 
   const handleFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
     const v = event.target.value;
@@ -51,13 +63,15 @@ const AutocompleteInput = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <SearchInput>
+      <SearchInput hasFocus={focus}>
         {/* <Search className="icon" /> */}
         <input
           type="text"
-          placeholder="Pesquisar..."
+          placeholder="Codigo Naladi NCCA"
           value={inputSearch}
           onChange={handleFilter}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
         />
         <div style={{ display: 'flex' }}>
           {inputSearch !== ''
@@ -74,11 +88,11 @@ const AutocompleteInput = () => {
             )
             : ''}
         </div>
-        <Search style={{ fontSize: '22px', cursor: 'pointer' }} onClick={handleModal} />
+        <Search style={{ fontSize: '22px', cursor: 'pointer', color: '#2974b0' }} onClick={handleModal} />
       </SearchInput>
 
       {filterSearch && (
-        <DataResult>
+        <DataResult teste={teste}>
           {filterSearch.map((value) => (
             <DataItem key={value.codigo} onClick={() => handleClickAutocomplete(value)}>
               <Search style={{ color: '#c2c2c2' }} />

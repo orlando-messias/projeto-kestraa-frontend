@@ -59,12 +59,13 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     width: '80%',
     display: 'flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   button1: {
     backgroundColor: '#1368B4',
     color: '#FFFFFF',
-    width: '130px',
+    width: '120px',
+    fontSize: '11px',
 
     '&:hover': {
       backgroundColor: '#4892db'
@@ -73,8 +74,9 @@ export const useStyles = makeStyles((theme) => ({
   button2: {
     backgroundColor: '#FF941D',
     color: '#FFFFFF',
-    width: '130px',
+    width: '120px',
     marginLeft: '10px',
+    fontSize: '11px',
 
     '&:hover': {
       backgroundColor: '#f8a444'

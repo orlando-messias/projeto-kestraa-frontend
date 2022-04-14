@@ -9,16 +9,15 @@ import {
 } from '@material-ui/core';
 import InputMask from 'react-input-mask';
 import {
-  CheckCircle, Delete, FiberNew, Search
+  CheckCircle, Delete, FiberNew
 } from '@mui/icons-material';
 import React, { useState } from 'react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import AutocompleteInput from 'components/AutocompleteInput/AutocompleteInput';
 import {
   Container, Content, Header, useStyles
 } from './MercadoriaForm.styles';
-import data from './data.json';
 
 const MercadoriaForm = () => {
   const [mercadoria] = useState({
@@ -223,8 +222,9 @@ const MercadoriaForm = () => {
                     helperText={formik.touched.cdNaladiSh && formik.errors.cdNaladiSh}
                   />
                 </Grid>
-                <Grid item sm={3}>
-                  <Autocomplete
+                <Grid item>
+                  <AutocompleteInput />
+                  {/* <Autocomplete
                     options={data}
                     size="small"
                     getOptionLabel={(option) => `${option.codigo}`}
@@ -243,7 +243,9 @@ const MercadoriaForm = () => {
                           ...params.InputProps,
                           endAdornment: (
                             <InputAdornment position="end">
-                              <Search style={{ color: '#c2c2c2', position: 'relative', right: '-30px' }} />
+                              <Search style={{
+                                color: '#c2c2c2', position: 'relative', right: '-30px'
+                              }} />
                             </InputAdornment>
                           )
                         }}
@@ -259,7 +261,7 @@ const MercadoriaForm = () => {
                       stringify: (option) => option.codigo
                     })}
                     noOptionsText="Digite um código válido"
-                  />
+                  /> */}
                 </Grid>
 
               </Grid>
@@ -276,6 +278,7 @@ const MercadoriaForm = () => {
             <Grid container spacing={2}>
               <Grid item sm={4}>
                 <TextField
+                  size="small"
                   label="Valor Peso Liq Unitário"
                   name="vlPesoLiqUnitario"
                   placeholder="0.00000"
@@ -283,6 +286,7 @@ const MercadoriaForm = () => {
                   onChange={formik.handleChange}
                   value={formik.values.vlPesoLiqUnitario}
                   InputProps={{
+                    className: styles.input,
                     endAdornment: (
                       <InputAdornment position="start">Kg</InputAdornment>
                     )
@@ -297,6 +301,7 @@ const MercadoriaForm = () => {
               </Grid>
               <Grid item sm={4}>
                 <TextField
+                  size="small"
                   label="Valor Peso Liq Unit Apresentação"
                   name="vlPesoLiqUnitarioApresentacao"
                   placeholder="0.00000"
@@ -304,6 +309,7 @@ const MercadoriaForm = () => {
                   onChange={formik.handleChange}
                   value={formik.values.vlPesoLiqUnitarioApresentacao}
                   InputProps={{
+                    className: styles.input,
                     endAdornment: (
                       <InputAdornment position="start">Kg</InputAdornment>
                     )
@@ -335,9 +341,9 @@ const MercadoriaForm = () => {
 
           <Paper className={styles.pageContentButtons}>
             <div>
-              <Button type="submit" startIcon={<CheckCircle />} className={styles.button1}>Salvar</Button>
+              <Button type="submit" startIcon={<CheckCircle style={{ fontSize: '16px' }} />} className={styles.button1}>salvar</Button>
               <Button
-                startIcon={<Delete />}
+                startIcon={<Delete style={{ fontSize: '16px' }} />}
                 className={styles.button2}
               >
                 Limpar
