@@ -18,13 +18,13 @@ export default function useBookSearch(query: string, pageNumber: Number) {
 
     axios({
       method: 'GET',
-      url: 'http://openlibrary.org/search.json',
-      params: { q: query, page: pageNumber },
+      url: 'http://172.20.10.177:5502/naladi/ncca',
+      params: { cod: query, page: pageNumber },
       // eslint-disable-next-line no-return-assign
       cancelToken: new axios.CancelToken((c) => cancel = c)
     }).then((res) => {
-      setBooks((prevBooks: any) => [...prevBooks, ...res.data.docs.map((b: any) => b.title)]);
-      setHasMore(res.data.docs.length > 0);
+      setBooks((prevBooks: any) => [...prevBooks, ...res.data.data.map((b: any) => `${b.cod} - ${b.description}`)]);
+      setHasMore(res.data.data.length > 0);
       setLoading(false);
     }).catch((e) => {
       if (axios.isCancel(e)) return;

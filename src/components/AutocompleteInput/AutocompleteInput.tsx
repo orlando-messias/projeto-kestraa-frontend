@@ -1,10 +1,11 @@
-import { Close, Search, Refresh } from '@mui/icons-material';
+import { Close, Search } from '@mui/icons-material';
 import React, {
   useCallback,
   useEffect,
   useRef,
   useState
 } from 'react';
+import { CircularProgress } from '@mui/material';
 import ModalMercadoriaForm from 'pages/MercadoriaPage/components/ModalMercadoriaForm/ModalMercadoriaForm';
 import { DataItem, DataResult, SearchInput } from './Autocomplete.styles';
 import useBookSearch from './useBookSearch';
@@ -21,7 +22,7 @@ const AutocompleteInput = () => {
   const [showModal, setShowModal] = useState(false);
   const [teste, setTeste] = useState(false);
   const [focus, setFocus] = useState(false);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState('xxxx__');
   const [pageNumber, setPageNumber] = useState(1);
 
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
@@ -51,13 +52,13 @@ const AutocompleteInput = () => {
   }, [loading, hasMore]);
 
   const handleModal = () => {
-    setQuery('');
+    setQuery('xxx');
     setShowModal(!showModal);
   };
 
   useEffect(() => {
     if (inputSearch === '') {
-      setQuery('');
+      setQuery('xxx');
     }
   }, [inputSearch]);
 
@@ -82,7 +83,7 @@ const AutocompleteInput = () => {
 
   const handleClickAutocomplete = (value: any) => {
     setInputSearch(value);
-    setQuery('');
+    setQuery('xxx');
   };
 
   const clearText = () => {
@@ -151,7 +152,7 @@ const AutocompleteInput = () => {
           {loading
             && (
             <p style={{ margin: '10px', display: 'flex', alignItems: 'center' }}>
-              <Refresh style={{ fontSize: '14px' }} />
+              <CircularProgress size="1rem" />
               &nbsp;&nbsp;loading...
             </p>
             )}
@@ -166,7 +167,6 @@ const AutocompleteInput = () => {
         handleModal={handleModal}
         handleChangeValue={handleChangeValue}
       />
-
     </div>
   );
 };

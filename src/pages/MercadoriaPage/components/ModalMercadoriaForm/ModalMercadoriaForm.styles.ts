@@ -25,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
     height: 700,
     justifyContent: 'center',
     borderRadius: '10px',
-    boxShadow: '2px 3px 4px #c2c2c2'
+    boxShadow: '3px 3px 5px #c2c2c2',
+    border: '1px solid gray',
   },
   '@keyframes myEffect': {
     '0%': {
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderBottom: '1px solid #c2c2c2',
-    height: '50px',
+    height: '40px',
     color: '#1976D2'
   },
   buttonClose: {
