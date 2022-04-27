@@ -9,6 +9,8 @@ interface TableTesteProps {
   onSearchChange: (algo: any) => any;
   books: any[];
   isLoading: boolean;
+  onSearchClose: Function;
+  onSearchOpen: Function;
 }
 
 interface Item {
@@ -44,6 +46,8 @@ class TableTeste extends React.Component<TableTesteProps, {}> {
       onSearchChange,
       books,
       isLoading,
+      onSearchClose,
+      onSearchOpen,
     } = this.props;
 
     const columns = [
@@ -85,12 +89,12 @@ class TableTeste extends React.Component<TableTesteProps, {}> {
           noMatch: 'nenhum item encontrado'
         }
       },
-      onSearchChange: (change: any) => {
-        onSearchChange(change);
-      },
+      onSearchChange,
       onChangePage: (currentPage: any) => {
         onChangePage(currentPage);
-      }
+      },
+      onSearchClose: () => onSearchClose(),
+      onSearchOpen: () => onSearchOpen(),
     };
 
     return (

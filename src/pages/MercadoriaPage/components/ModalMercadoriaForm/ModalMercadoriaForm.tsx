@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal } from '@material-ui/core';
+import { debounce } from 'lodash';
 import axios from 'axios';
 import useStyles from './ModalMercadoriaForm.styles';
 // import TableMercadoriaForm from './TableMercadoriaForm';
@@ -18,6 +19,7 @@ const ModalMercadoriaForm: React.FC<ModalMercadoriaFormProps> = ({
 }) => {
   const [cod, setCod] = useState('');
   const [books, setBooks] = useState<any | null>([]);
+  const [data, setData] = useState<any | null>([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -28,40 +30,67 @@ const ModalMercadoriaForm: React.FC<ModalMercadoriaFormProps> = ({
     console.log(pageNum);
   };
 
-  const handleSearchChange = (search: any) => {
+  async function search(criteria: string) {
+    // if (!cod && page > 1) setPage(1);
+    setBooks([]);
+    axios({
+      method: 'GET',
+      url: 'http://172.20.10.177:5502/naladi/ncca',
+      params: { cod: criteria, page },
+      // eslint-disable-next-line no-return-assign
+    }).then((res) => {
+      setBooks(res.data.data);
+    });
+  }
+
+  const debouncedSearch = debounce(async (criteria) => {
+    if (criteria) {
+      await search(criteria);
+      setCod(criteria);
+    } else {
+      setCod('');
+      setBooks(data);
+    }
+  }, 1000);
+
+  const handleSearchChange = (value: string) => {
     // setCod(search);
-    setCod(search);
+    // setCod(search);
+    debouncedSearch(value);
+  };
+
+  const handleSearchOpen = () => {
+    if (page > 1) setPage(1);
+  };
+
+  const handleSearchclose = () => {
+    setBooks([]);
+    setCod('');
   };
 
   useEffect(() => {
     setIsLoading(true);
-    // if (cod.length > 0) {
-    //   setBooks([]);
-    //   setPage(1);
-    // }
-    let cancel: any;
     axios({
       method: 'GET',
       url: 'http://172.20.10.177:5502/naladi/ncca',
       params: { cod, page },
       // eslint-disable-next-line no-return-assign
-      cancelToken: new axios.CancelToken((c) => cancel = c)
     }).then((res) => {
-      if (cod.length > 0 && page === 1) setBooks([]);
       setBooks((prevBooks: any) => [...prevBooks, ...res.data.data]);
-    }).catch((e) => {
-      // eslint-disable-next-line no-useless-return
-      if (axios.isCancel(e)) return;
     }).finally(() => setIsLoading(false));
+  }, [page]);
 
-    return () => cancel();
-  }, [page, cod]);
+  useEffect(() => {
+    if (data.length === 0) setData(books);
+  }, [books]);
 
-  const handleCloseModal = () => {
-    if (page > 1 || cod.length > 0) {
+  const handleCloseModal = async () => {
+    if (page === 1) {
+      await search('');
+    } else {
       setBooks([]);
-      setPage(1);
       setCod('');
+      setPage(1);
     }
     handleModal();
   };
@@ -94,8 +123,9 @@ const ModalMercadoriaForm: React.FC<ModalMercadoriaFormProps> = ({
                 onSearchChange={handleSearchChange}
                 books={books}
                 isLoading={isLoading}
+                onSearchOpen={handleSearchOpen}
+                onSearchClose={handleSearchclose}
               />
-              {console.log('books 1', books)}
             </div>
           </div>
         </div>
