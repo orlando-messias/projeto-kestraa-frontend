@@ -162,11 +162,13 @@ const AutocompleteInput = () => {
 
       <br />
 
-      <ModalMercadoriaForm
-        showModal={showModal}
-        handleModal={handleModal}
-        handleChangeValue={handleChangeValue}
-      />
+      {showModal && (
+        <ModalMercadoriaForm
+          showModal={showModal}
+          handleModal={handleModal}
+          handleChangeValue={handleChangeValue}
+        />
+      )}
     </div>
   );
 };

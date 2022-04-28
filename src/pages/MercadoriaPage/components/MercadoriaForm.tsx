@@ -118,7 +118,7 @@ const MercadoriaForm = () => {
                     label="Descrição"
                     name="txDescricao"
                     multiline
-                    rows={6}
+                    minRows={1}
                     maxRows={6}
                     variant="outlined"
                     onChange={formik.handleChange}
@@ -140,7 +140,7 @@ const MercadoriaForm = () => {
                     label="Descrição SAP"
                     name="txDescricaoSap"
                     multiline
-                    rows={6}
+                    minRows={1}
                     maxRows={6}
                     variant="outlined"
                     onChange={formik.handleChange}

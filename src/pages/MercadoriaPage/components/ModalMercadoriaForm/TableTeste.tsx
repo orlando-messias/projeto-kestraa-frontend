@@ -86,7 +86,7 @@ class TableTeste extends React.Component<TableTesteProps, {}> {
           displayRows: ' de '
         },
         body: {
-          noMatch: 'nenhum item encontrado'
+          noMatch: isLoading ? <CircularProgress /> : 'nenhum item encontrado'
         }
       },
       onSearchChange,
@@ -99,7 +99,6 @@ class TableTeste extends React.Component<TableTesteProps, {}> {
 
     return (
       <div>
-        {console.log('books ', books)}
         <MuiThemeProvider theme={this.getMuiTheme()}>
           <MUIDataTable
             title=""
