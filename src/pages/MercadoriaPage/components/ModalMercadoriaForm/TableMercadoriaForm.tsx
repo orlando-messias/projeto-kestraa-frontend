@@ -1,21 +1,28 @@
 import React from 'react';
 import MUIDataTable from 'mui-datatables';
 import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import data from '../data.json';
+import { CircularProgress } from '@material-ui/core';
+import styled from 'styled-components';
 
-interface TableMercadoriaFormProps {
-  onChange: (algo: any) => any;
-}
+const LoadingDiv = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: -35px;
+`;
 
 interface Item {
-  codigo: string;
-  descricao: string;
+  cod: string;
+  description: string;
 }
 
-const renderItem = (i: any): Item => ({
-  codigo: i.codigo,
-  descricao: i.descricao
-});
+interface TableMercadoriaFormProps {
+  onChange: (rowData: string) => void;
+  onChangePage: (currentPage: number) => void;
+  onSearchChange: (data: any) => any;
+  data: Item[] | null;
+  isLoading: boolean;
+}
 
 class TableMercadoriaForm extends React.Component<TableMercadoriaFormProps, {}> {
   // eslint-disable-next-line class-methods-use-this
@@ -26,29 +33,37 @@ class TableMercadoriaForm extends React.Component<TableMercadoriaFormProps, {}> 
       },
       MUIDataTableBodyCell: {
         root: {
-          padding: '4px 0 3px 5px'
+          padding: '3px 0 2px 10px',
+          fontSize: '12px'
         }
       },
     }
   });
 
   render() {
-    const { onChange } = this.props;
+    const {
+      onChange,
+      onChangePage,
+      onSearchChange,
+      data,
+      isLoading,
+    } = this.props;
+
     const columns = [
       {
-        name: 'codigo',
-        label: 'CODIGO',
+        name: 'cod',
+        label: 'CÓDIGO',
         options: {
           filter: false,
           sort: true,
         }
       },
       {
-        name: 'descricao',
+        name: 'description',
         label: 'DESCRIÇÃO',
         options: {
-          filter: true,
-          sort: false,
+          filter: false,
+          sort: true,
         }
       }
     ];
@@ -60,8 +75,8 @@ class TableMercadoriaForm extends React.Component<TableMercadoriaFormProps, {}> 
       print: false,
       viewColumns: false,
       selectableRowsHideCheckboxes: true,
-      rowsPerPage: 10,
-      rowsPerPageOptions: [10],
+      rowsPerPage: 15,
+      rowsPerPageOptions: [15],
       onRowClick: (rowData: any) => {
         onChange(`${rowData[0]} - ${rowData[1]}`);
       },
@@ -70,8 +85,12 @@ class TableMercadoriaForm extends React.Component<TableMercadoriaFormProps, {}> 
           displayRows: ' de '
         },
         body: {
-          noMatch: 'nenhum item encontrado'
+          noMatch: isLoading ? <CircularProgress /> : 'nenhum item encontrado'
         }
+      },
+      onSearchChange,
+      onChangePage: (currentPage: number) => {
+        onChangePage(currentPage);
       },
     };
 
@@ -80,10 +99,13 @@ class TableMercadoriaForm extends React.Component<TableMercadoriaFormProps, {}> 
         <MuiThemeProvider theme={this.getMuiTheme()}>
           <MUIDataTable
             title=""
-            data={data.map((item) => renderItem(item))}
+            data={data || []}
             columns={columns}
             options={options}
           />
+          {isLoading
+            ? <LoadingDiv><CircularProgress size="1.5rem" /></LoadingDiv>
+            : null}
         </MuiThemeProvider>
       </div>
     );

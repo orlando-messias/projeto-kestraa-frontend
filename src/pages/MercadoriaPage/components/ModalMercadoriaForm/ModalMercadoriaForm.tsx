@@ -3,13 +3,17 @@ import { Modal } from '@material-ui/core';
 import { debounce } from 'lodash';
 import axios from 'axios';
 import useStyles from './ModalMercadoriaForm.styles';
-// import TableMercadoriaForm from './TableMercadoriaForm';
-import TableTeste from './TableTeste';
+import TableMercadoriaForm from './TableMercadoriaForm';
 
 interface ModalMercadoriaFormProps {
   showModal: boolean;
   handleModal: () => void;
-  handleChangeValue: (value: any) => any;
+  handleChangeValue: (value: string) => void;
+}
+
+interface Item {
+  cod: string;
+  description: string;
 }
 
 const ModalMercadoriaForm: React.FC<ModalMercadoriaFormProps> = ({
@@ -18,40 +22,38 @@ const ModalMercadoriaForm: React.FC<ModalMercadoriaFormProps> = ({
   handleChangeValue,
 }) => {
   const [codNcca, setCodNcca] = useState('');
-  const [books, setBooks] = useState<any | null>([]);
-  const [data, setData] = useState<any | null>([]);
+  const [nccaItems, setNccaItems] = useState<Item[] | null>([]);
+  const [copyNccaItems, copySetNccaItems] = useState<Item[] | null>([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
   const styles = useStyles();
 
-  async function fetchCodNcca(cod: string, pageItem: number) {
+  useEffect(() => {
+    if (!copyNccaItems?.length) copySetNccaItems(nccaItems);
+  }, [nccaItems]);
+
+  async function fetchCodNcca(cod: string, pageNum: number) {
     setIsLoading(true);
     axios({
       method: 'GET',
       url: 'http://172.20.10.177:5502/naladi/ncca',
-      params: { cod, page: pageItem },
-      // eslint-disable-next-line no-return-assign
+      params: { cod, page: pageNum },
     }).then((res) => {
-      setBooks((prevBooks: any) => [...prevBooks, ...res.data.data]);
-    }).finally(() => setIsLoading(false));
+      if (pageNum === 1) {
+        setNccaItems(res.data.data);
+      } else {
+        setNccaItems((prevNccaItems: any) => [...prevNccaItems, ...res.data.data]);
+      }
+    })
+      .finally(() => setIsLoading(false));
   }
 
-  async function search(criteria: string, pageNum: number) {
-    // if (!cod && page > 1) setPage(1);
-    setIsLoading(true);
-    setBooks([]);
-    axios({
-      method: 'GET',
-      url: 'http://172.20.10.177:5502/naladi/ncca',
-      params: { cod: criteria, page: pageNum },
-      // eslint-disable-next-line no-return-assign
-    }).then((res) => {
-      setBooks(res.data.data);
-    }).finally(() => setIsLoading(false));
-  }
+  useEffect(() => {
+    fetchCodNcca('', 1);
+  }, []);
 
-  const handleChangePage = async (pageNum: any) => {
+  const handleChangePage = async (pageNum: number) => {
     if (pageNum >= page) {
       await fetchCodNcca(codNcca, page + 1);
       setPage(pageNum + 1);
@@ -60,53 +62,26 @@ const ModalMercadoriaForm: React.FC<ModalMercadoriaFormProps> = ({
 
   const debouncedSearch = debounce(async (criteria) => {
     if (criteria) {
-      await search(criteria, 1);
+      await fetchCodNcca(criteria, 1);
       setCodNcca(criteria);
-      setPage(1);
     } else {
       setCodNcca('');
-      setBooks(data);
-      setPage(1);
+      setNccaItems(copyNccaItems);
     }
+    setPage(1);
   }, 1000);
 
   const handleSearchChange = (value: string) => {
     debouncedSearch(value);
   };
 
-  const handleSearchOpen = () => {
-    // if (page > 1) setPage(1);
-  };
-
-  const handleSearchclose = () => {
-    setCodNcca('');
-    setBooks(data);
-    setPage(1);
-  };
-
-  useEffect(() => {
-    fetchCodNcca('', 1);
-  }, []);
-
-  useEffect(() => {
-    if (data.length === 0) setData(books);
-  }, [books]);
-
   const handleCloseModal = async () => {
-    if (page === 1) {
-      await search('', 1);
-    } else {
-      setBooks([]);
-      setCodNcca('');
-      setPage(1);
-    }
     handleModal();
   };
 
   return (
     <Modal open={showModal} onClose={handleCloseModal}>
       <div className={styles.modalContainer}>
-        {console.log(page)}
         <div className={styles.ModalContent}>
           <div className={styles.modalTitle}>
             <h4>Código Naladi NCCA</h4>
@@ -126,14 +101,12 @@ const ModalMercadoriaForm: React.FC<ModalMercadoriaFormProps> = ({
               marginTop: '14px', width: '90%', height: '500px', display: 'flex', justifyContent: 'flex-start', flexDirection: 'column'
             }}
             >
-              <TableTeste
+              <TableMercadoriaForm
                 onChange={handleChangeValue}
                 onChangePage={handleChangePage}
                 onSearchChange={handleSearchChange}
-                books={books}
+                data={nccaItems}
                 isLoading={isLoading}
-                onSearchOpen={handleSearchOpen}
-                onSearchClose={handleSearchclose}
               />
             </div>
           </div>

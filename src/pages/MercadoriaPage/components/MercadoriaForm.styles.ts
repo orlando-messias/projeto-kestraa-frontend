@@ -6,7 +6,7 @@ export const Container = styled.div`
   margin: 0;
   width: 100%;
   background-color: #F2F2F7;
-  `;
+`;
 
 export const Header = styled.div`
   /* border-bottom: 1px solid #C0C0C0; */
