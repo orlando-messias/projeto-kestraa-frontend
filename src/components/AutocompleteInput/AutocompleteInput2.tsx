@@ -8,16 +8,15 @@ import React, {
 import { CircularProgress } from '@mui/material';
 import ModalMercadoriaForm from 'pages/MercadoriaPage/components/ModalMercadoriaForm/ModalMercadoriaForm';
 import { DataItem, DataResult, SearchInput } from './Autocomplete.styles';
-import useBookSearch from './useBookSearch';
+import useBookSearch2 from './useBookSearch2';
 
 interface Item {
   cod: string;
   description: string;
 }
 
-const AutocompleteInput = () => {
+const AutocompleteInput2 = () => {
   const [inputSearch, setInputSearch] = useState('');
-  // const [filterSearch, setFilterSearch] = useState<Item[] | null>([]);
   const [showModal, setShowModal] = useState(false);
   const [teste, setTeste] = useState(false);
   const [focus, setFocus] = useState(false);
@@ -37,7 +36,7 @@ const AutocompleteInput = () => {
     loading,
     error,
     hasMore
-  } = useBookSearch(query, pageNumber);
+  } = useBookSearch2(query, pageNumber);
 
   const observer = useRef<IntersectionObserver>();
 
@@ -54,7 +53,7 @@ const AutocompleteInput = () => {
 
   const handleModal = () => {
     setQuery('xxx');
-    setApi('naladi/ncca');
+    setApi('naladi/sh');
     setShowModal(!showModal);
   };
 
@@ -94,7 +93,7 @@ const AutocompleteInput = () => {
         {/* <Search className="icon" /> */}
         <input
           type="text"
-          placeholder="Codigo Naladi NCCA"
+          placeholder="Codigo Naladi SH"
           value={inputSearch}
           onChange={handleSearch}
           onFocus={() => setFocus(true)}
@@ -153,8 +152,6 @@ const AutocompleteInput = () => {
 
       <br />
 
-      {console.log(copyNccaItems)}
-
       {showModal && (
         <ModalMercadoriaForm
           api={api}
@@ -169,4 +166,4 @@ const AutocompleteInput = () => {
   );
 };
 
-export default AutocompleteInput;
+export default AutocompleteInput2;

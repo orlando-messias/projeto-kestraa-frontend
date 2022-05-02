@@ -7,6 +7,7 @@ const AppRoutes = () => (
     <Routes>
       <Route path="/" element={<MainPage />} />
       <Route path="/cadastro/mercadoria" element={<MercadoriaPage />} />
+      <Route path="/cadastro/mercadoria/:mercadoriaId" element={<MercadoriaPage />} />
     </Routes>
   </Router>
 );

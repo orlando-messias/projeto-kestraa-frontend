@@ -7,14 +7,18 @@ import {
   Switch,
   TextField
 } from '@material-ui/core';
-import InputMask from 'react-input-mask';
 import {
   CheckCircle, Delete, FiberNew
 } from '@mui/icons-material';
-import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import AutocompleteInput from 'components/AutocompleteInput/AutocompleteInput';
+import AutocompleteInput2 from 'components/AutocompleteInput/AutocompleteInput2';
+import AutocompleteInput3 from 'components/AutocompleteInput/AutocompleteInput3';
+import AutocompleteInput4 from 'components/AutocompleteInput/AutocompleteInput4';
 import {
   Container, Content, Header, useStyles
 } from './MercadoriaForm.styles';
@@ -34,6 +38,7 @@ const MercadoriaForm = () => {
     vlPesoLiqUnitarioApresentacao: '',
     inAtivo: false
   });
+  // const [data, setData] = useState('');
 
   const cadastroFormSchema = yup.object().shape({
     cdMercadoria: yup.string().required('Código da mercadoria obrigatório'),
@@ -66,11 +71,21 @@ const MercadoriaForm = () => {
 
   const styles = useStyles();
 
+  const { mercadoriaId } = useParams();
+
+  useEffect(() => {
+    axios({
+      method: 'GET',
+      url: `http://172.20.10.177:5502/merchandise/${mercadoriaId}`,
+    }).then((res) => console.log('here ', res.data));
+  }, [mercadoriaId]);
+
   return (
     <Container>
       <Header>
         <span className="icon"><FiberNew /></span>
         <span>Cadastro de Mercadoria</span>
+        {/* {console.log('here ', data)} */}
       </Header>
       <div style={{ margin: '50px 0 0 50px' }}>
         <form noValidate onSubmit={formik.handleSubmit}>
@@ -118,7 +133,7 @@ const MercadoriaForm = () => {
                     label="Descrição"
                     name="txDescricao"
                     multiline
-                    minRows={1}
+                    minRows={3}
                     maxRows={6}
                     variant="outlined"
                     onChange={formik.handleChange}
@@ -140,7 +155,7 @@ const MercadoriaForm = () => {
                     label="Descrição SAP"
                     name="txDescricaoSap"
                     multiline
-                    minRows={1}
+                    minRows={3}
                     maxRows={6}
                     variant="outlined"
                     onChange={formik.handleChange}
@@ -157,7 +172,7 @@ const MercadoriaForm = () => {
                     helperText={formik.touched.txDescricaoSap && formik.errors.txDescricaoSap}
                   />
                 </Grid>
-                <Grid item sm={3} md={3}>
+                {/* <Grid item sm={6}>
                   <TextField
                     size="small"
                     label="Cod Unidade Med Comercial"
@@ -177,8 +192,8 @@ const MercadoriaForm = () => {
                     helperText={formik.touched.cdUnidMedComerc
                       && formik.errors.cdUnidMedComerc}
                   />
-                </Grid>
-                <Grid item sm={3} md={3}>
+                </Grid> */}
+                {/* <Grid item sm={3} md={3}>
                   <InputMask
                     mask="9999.99.99"
                     onChange={formik.handleChange}
@@ -202,8 +217,8 @@ const MercadoriaForm = () => {
                       />
                     )}
                   </InputMask>
-                </Grid>
-                <Grid item sm={3} md={3}>
+                </Grid> */}
+                {/* <Grid item sm={3} md={3}>
                   <TextField
                     size="small"
                     label="Cod Naladi SH"
@@ -221,48 +236,25 @@ const MercadoriaForm = () => {
                     error={formik.touched.cdNaladiSh && Boolean(formik.errors.cdNaladiSh)}
                     helperText={formik.touched.cdNaladiSh && formik.errors.cdNaladiSh}
                   />
-                </Grid>
+                </Grid> */}
                 <Grid item>
-                  <AutocompleteInput />
-                  {/* <Autocomplete
-                    options={data}
-                    size="small"
-                    getOptionLabel={(option) => `${option.codigo}`}
-                    isOptionEqualToValue={(option, value) => option.codigo === value.codigo}
-                    onChange={formik.handleChange}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Cod Naladi NCCA"
-                        variant="outlined"
-                        name="cdNaladiNcca"
-                        onChange={formik.handleChange}
-                        value={formik.values.cdNaladiNcca}
-                        // eslint-disable-next-line max-len
-                        InputProps={{
-                          ...params.InputProps,
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <Search style={{
-                                color: '#c2c2c2', position: 'relative', right: '-30px'
-                              }} />
-                            </InputAdornment>
-                          )
-                        }}
-                        InputLabelProps={{
-                          className: styles.inputLabel
-                        }}
-                        error={formik.touched.cdNaladiNcca && Boolean(formik.errors.cdNaladiNcca)}
-                        helperText={formik.touched.cdNaladiNcca && formik.errors.cdNaladiNcca}
-                      />
-                    )}
-                    filterOptions={createFilterOptions({
-                      matchFrom: 'start',
-                      stringify: (option) => option.codigo
-                    })}
-                    noOptionsText="Digite um código válido"
-                  /> */}
+                  <AutocompleteInput4 />
                 </Grid>
+                <div style={{ marginTop: '-13px', marginLeft: '8px' }}>
+                  <Grid item>
+                    <AutocompleteInput3 />
+                  </Grid>
+                </div>
+                <div style={{ marginTop: '-13px', marginLeft: '8px' }}>
+                  <Grid item>
+                    <AutocompleteInput2 />
+                  </Grid>
+                </div>
+                <div style={{ marginTop: '-6px', marginLeft: '8px' }}>
+                  <Grid item>
+                    <AutocompleteInput />
+                  </Grid>
+                </div>
 
               </Grid>
             </Content>

@@ -5,39 +5,44 @@ import axios from 'axios';
 import useStyles from './ModalMercadoriaForm.styles';
 import TableMercadoriaForm from './TableMercadoriaForm';
 
-interface ModalMercadoriaFormProps {
-  showModal: boolean;
-  handleModal: () => void;
-  handleChangeValue: (value: string) => void;
-}
-
 interface Item {
   cod: string;
   description: string;
 }
 
+interface ModalMercadoriaFormProps {
+  api: string | null;
+  showModal: boolean;
+  handleModal: () => void;
+  handleChangeValue: (value: string) => void;
+  copyNccaItems: Item[] | null;
+  setCopyNccaItems: Function;
+}
+
 const ModalMercadoriaForm: React.FC<ModalMercadoriaFormProps> = ({
+  api,
   showModal,
   handleModal,
   handleChangeValue,
+  copyNccaItems,
+  setCopyNccaItems
 }) => {
   const [codNcca, setCodNcca] = useState('');
   const [nccaItems, setNccaItems] = useState<Item[] | null>([]);
-  const [copyNccaItems, copySetNccaItems] = useState<Item[] | null>([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
   const styles = useStyles();
 
-  useEffect(() => {
-    if (!copyNccaItems?.length) copySetNccaItems(nccaItems);
-  }, [nccaItems]);
+  // useEffect(() => {
+  //   if (!copyNccaItems?.length) setNccaItems(copyNccaItems);
+  // }, [nccaItems]);
 
   async function fetchCodNcca(cod: string, pageNum: number) {
     setIsLoading(true);
     axios({
       method: 'GET',
-      url: 'http://172.20.10.177:5502/naladi/ncca',
+      url: `http://172.20.10.177:5502/${api}`,
       params: { cod, page: pageNum },
     }).then((res) => {
       if (pageNum === 1) {
@@ -50,8 +55,19 @@ const ModalMercadoriaForm: React.FC<ModalMercadoriaFormProps> = ({
   }
 
   useEffect(() => {
-    fetchCodNcca('', 1);
+    if (!copyNccaItems?.length) {
+      fetchCodNcca('', 1);
+    } else {
+      setNccaItems(copyNccaItems);
+      setIsLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    if (!copyNccaItems?.length) {
+      setCopyNccaItems(nccaItems);
+    }
+  }, [nccaItems]);
 
   const handleChangePage = async (pageNum: number) => {
     if (pageNum >= page) {
