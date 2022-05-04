@@ -15,7 +15,12 @@ interface Item {
   description: string;
 }
 
-const AutocompleteInput4 = () => {
+interface AutocompleteInput4Props {
+  inputValue: string | null;
+  onChangeValue: (v: any) => any;
+}
+
+const AutocompleteInput4: React.FC<AutocompleteInput4Props> = ({ inputValue, onChangeValue }) => {
   const [inputSearch, setInputSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [teste, setTeste] = useState(false);
@@ -24,6 +29,14 @@ const AutocompleteInput4 = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [copyNccaItems, setCopyNccaItems] = useState<Item[] | null>([]);
   const [api, setApi] = useState('');
+
+  useEffect(() => {
+    if (inputValue) setInputSearch(inputValue);
+  }, [inputValue]);
+
+  useEffect(() => {
+    onChangeValue(inputSearch);
+  }, [inputSearch]);
 
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setQuery(e.target.value);
@@ -78,12 +91,10 @@ const AutocompleteInput4 = () => {
 
   const clearText = () => {
     setInputSearch('');
-    // setFilterSearch([]);
   };
 
   const handleChangeValue = (value: string) => {
     setInputSearch(value);
-    // setFilterSearch([]);
     handleModal();
   };
 
@@ -93,14 +104,16 @@ const AutocompleteInput4 = () => {
         {/* <Search className="icon" /> */}
         <input
           type="text"
-          placeholder="Cod Unid Medida Comercial"
+          placeholder="Unidade Medida Comercial"
           value={inputSearch}
           onChange={handleSearch}
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
+          disabled={!!inputValue}
+          style={{ color: inputValue ? '#b8b8b8' : 'black', backgroundColor: 'white' }}
         />
         <div style={{ display: 'flex' }}>
-          {inputSearch !== ''
+          {(inputSearch !== '' && !inputValue)
             ? (
               <Close
                 style={{
@@ -114,7 +127,7 @@ const AutocompleteInput4 = () => {
             )
             : ''}
         </div>
-        <Search style={{ fontSize: '22px', cursor: 'pointer', color: '#2974b0' }} onClick={handleModal} />
+        <Search style={{ fontSize: '22px', cursor: 'pointer', color: inputValue ? '#dbdbdb' : '#2974b0' }} onClick={handleModal} />
       </SearchInput>
 
       {books.length > 0 && (

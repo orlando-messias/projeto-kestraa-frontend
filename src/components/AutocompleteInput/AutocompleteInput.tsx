@@ -15,7 +15,12 @@ interface Item {
   description: string;
 }
 
-const AutocompleteInput = () => {
+interface AutocompleteInput4Props {
+  inputValue: string | null | undefined;
+  onChangeValue: (v: any) => any;
+}
+
+const AutocompleteInput: React.FC<AutocompleteInput4Props> = ({ inputValue, onChangeValue }) => {
   const [inputSearch, setInputSearch] = useState('');
   // const [filterSearch, setFilterSearch] = useState<Item[] | null>([]);
   const [showModal, setShowModal] = useState(false);
@@ -25,6 +30,14 @@ const AutocompleteInput = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [copyNccaItems, setCopyNccaItems] = useState<Item[] | null>([]);
   const [api, setApi] = useState('');
+
+  useEffect(() => {
+    if (inputValue) setInputSearch(inputValue);
+  }, [inputValue]);
+
+  useEffect(() => {
+    onChangeValue(inputSearch);
+  }, [inputSearch]);
 
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setQuery(e.target.value);
@@ -129,7 +142,7 @@ const AutocompleteInput = () => {
                   <p ref={lastBookElementRef}>{`${value}`}</p>
                 </DataItem>
               );
-            // eslint-disable-next-line no-else-return
+              // eslint-disable-next-line no-else-return
             } else {
               return (
                 // eslint-disable-next-line react/no-array-index-key
@@ -142,10 +155,10 @@ const AutocompleteInput = () => {
           })}
           {loading
             && (
-            <p style={{ margin: '10px', display: 'flex', alignItems: 'center' }}>
-              <CircularProgress size="1rem" />
-              &nbsp;&nbsp;loading...
-            </p>
+              <p style={{ margin: '10px', display: 'flex', alignItems: 'center' }}>
+                <CircularProgress size="1rem" />
+                &nbsp;&nbsp;loading...
+              </p>
             )}
           <p>{error && 'error'}</p>
         </DataResult>

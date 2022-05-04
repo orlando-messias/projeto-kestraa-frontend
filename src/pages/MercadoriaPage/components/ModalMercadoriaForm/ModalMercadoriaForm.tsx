@@ -34,16 +34,12 @@ const ModalMercadoriaForm: React.FC<ModalMercadoriaFormProps> = ({
 
   const styles = useStyles();
 
-  // useEffect(() => {
-  //   if (!copyNccaItems?.length) setNccaItems(copyNccaItems);
-  // }, [nccaItems]);
-
   async function fetchCodNcca(cod: string, pageNum: number) {
     setIsLoading(true);
     axios({
       method: 'GET',
       url: `http://172.20.10.177:5502/${api}`,
-      params: { cod, page: pageNum },
+      params: api === 'unit/measurement' ? { desc: cod, page: pageNum } : { cod, page: pageNum },
     }).then((res) => {
       if (pageNum === 1) {
         setNccaItems(res.data.data);

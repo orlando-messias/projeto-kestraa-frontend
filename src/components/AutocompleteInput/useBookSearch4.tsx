@@ -19,7 +19,7 @@ export default function useBookSearch4(query: string, pageNumber: Number) {
     axios({
       method: 'GET',
       url: 'http://172.20.10.177:5502/unit/measurement',
-      params: { cod: query, page: pageNumber },
+      params: { desc: query, page: pageNumber },
       // eslint-disable-next-line no-return-assign
       cancelToken: new axios.CancelToken((c) => cancel = c)
     }).then((res) => {

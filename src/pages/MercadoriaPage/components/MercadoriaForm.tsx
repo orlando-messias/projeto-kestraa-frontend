@@ -23,38 +23,59 @@ import {
   Container, Content, Header, useStyles
 } from './MercadoriaForm.styles';
 
+interface Mercadoria {
+  cod: string;
+  description: string;
+  descriptionSap: string;
+  id: number;
+  naladiNCCA: {
+    cod: string;
+    description: string;
+  };
+  naladiSH: {
+    cod: string;
+    description: string;
+  };
+  ncm: {
+    cod: string;
+    description: string;
+  };
+  nickname: string;
+  unit: {
+    cod: string;
+    description: string;
+    initials: string;
+  }
+  vlUnitWeight: string;
+  vlUnitWeightPresentation: string;
+}
+
 const MercadoriaForm = () => {
-  const [mercadoria] = useState({
-    cdMercadoria: '',
-    cdGrupo: 0,
-    apMercadoria: '',
-    txDescricao: '',
-    txDescricaoSap: '',
-    cdUnidMedComerc: '',
-    cdNcmSh: '',
-    cdNaladiSh: '',
-    cdNaladiNcca: '',
-    vlPesoLiqUnitario: '',
-    vlPesoLiqUnitarioApresentacao: '',
-    inAtivo: false
+  const [mercadoria, setMercadoria] = useState<Mercadoria>({
+    cod: '',
+    id: 0,
+    nickname: '',
+    description: '',
+    descriptionSap: '',
+    unit: { cod: '', description: '', initials: '' },
+    naladiSH: { cod: '', description: '' },
+    ncm: { cod: '', description: '' },
+    naladiNCCA: { cod: '', description: '' },
+    vlUnitWeight: '',
+    vlUnitWeightPresentation: '',
   });
-  // const [data, setData] = useState('');
 
   const cadastroFormSchema = yup.object().shape({
-    cdMercadoria: yup.string().required('Código da mercadoria obrigatório'),
-    apMercadoria: yup.string().required('Apelido da Mercadoria obrigatório').max(50, 'Máximo 50 caracteres'),
-    txDescricao: yup.string().required('Descrição obrigatória'),
-    txDescricaoSap: yup.string().required('Descrição SAP obrigatória'),
-    cdUnidMedComerc: yup.string().required('Código Unidade Med Comercial obrigatória'),
-    cdNcmSh: yup.string().required('Código Ncm Sh obrigatório').min(8, 'Formato de código inválido'),
-    cdNaladiSh: yup.string().required('Código Naladi SH obrigatório'),
-    cdNaladiNcca: yup.string().required('Código Naladi NCCA obrigatório'),
-    vlPesoLiqUnitario: yup.string().required('Peso Líquido Unit obrigatório'),
-    vlPesoLiqUnitarioApresentacao: yup.string().required('Peso Líquido Unit Apresentação obrigatório'),
+    cod: yup.string().required('Código da mercadoria obrigatório'),
+    nickname: yup.string().required('Apelido da Mercadoria obrigatório').max(50, 'Máximo 50 caracteres'),
+    description: yup.string().required('Descrição obrigatória'),
+    descriptionSap: yup.string().required('Descrição SAP obrigatória'),
+    vlUnitWeight: yup.string().required('Peso Líquido Unit obrigatório'),
+    vlUnitWeightPresentation: yup.string().required('Peso Líquido Unit Apresentação obrigatório'),
   });
 
   const update = async (values: any) => {
-    console.log(values);
+    console.log('Mercadoria ', values);
   };
 
   const formik = useFormik({
@@ -67,8 +88,6 @@ const MercadoriaForm = () => {
     },
   });
 
-  // const onlyNumbers = (str: any) => str.replace(/[^0-9]/g, '');
-
   const styles = useStyles();
 
   const { mercadoriaId } = useParams();
@@ -77,15 +96,53 @@ const MercadoriaForm = () => {
     axios({
       method: 'GET',
       url: `http://172.20.10.177:5502/merchandise/${mercadoriaId}`,
-    }).then((res) => console.log('here ', res.data));
+    }).then((res) => {
+      setMercadoria(res.data);
+    });
   }, [mercadoriaId]);
+
+  const handleChangeInputValue4 = (value: string) => {
+    if (value.indexOf('-') > -1) {
+      const newValue = value.substring(0, value.indexOf(' -'));
+      formik.values.unit.cod = newValue;
+    } else {
+      formik.values.unit.cod = value;
+    }
+    // setMercadoria((prev) => ({ ...prev, unit: { ...prev.unit, description: value } }));
+  };
+
+  const handleChangeInputValue3 = (value: string) => {
+    if (value.indexOf('-') > -1) {
+      const newValue = value.substring(0, value.indexOf(' -'));
+      formik.values.ncm.cod = newValue;
+    } else {
+      formik.values.ncm.cod = value;
+    }
+  };
+
+  const handleChangeInputValue2 = (value: string) => {
+    if (value.indexOf('-') > -1) {
+      const newValue = value.substring(0, value.indexOf(' -'));
+      formik.values.naladiSH.cod = newValue;
+    } else {
+      formik.values.naladiSH.cod = value;
+    }
+  };
+
+  const handleChangeInputValue = (value: string) => {
+    if (value.indexOf('-') > -1) {
+      const newValue = value.substring(0, value.indexOf(' -'));
+      formik.values.naladiNCCA.cod = newValue;
+    } else {
+      formik.values.naladiNCCA.cod = value;
+    }
+  };
 
   return (
     <Container>
       <Header>
         <span className="icon"><FiberNew /></span>
         <span>Cadastro de Mercadoria</span>
-        {/* {console.log('here ', data)} */}
       </Header>
       <div style={{ margin: '50px 0 0 50px' }}>
         <form noValidate onSubmit={formik.handleSubmit}>
@@ -97,7 +154,7 @@ const MercadoriaForm = () => {
                 <Grid item sm={12}>
                   <TextField
                     label="Cod Mercadoria"
-                    name="cdMercadoria"
+                    name="cod"
                     variant="outlined"
                     size="small"
                     autoFocus
@@ -105,39 +162,40 @@ const MercadoriaForm = () => {
                       className: styles.inputLabel
                     }}
                     onChange={formik.handleChange}
-                    value={formik.values.cdMercadoria}
-                    error={formik.touched.cdMercadoria && Boolean(formik.errors.cdMercadoria)}
-                    helperText={formik.touched.cdMercadoria && formik.errors.cdMercadoria}
+                    value={formik.values.cod}
+                    error={formik.touched.cod && Boolean(formik.errors.cod)}
+                    helperText={formik.touched.cod && formik.errors.cod}
+                    disabled={!!mercadoriaId}
                   />
                 </Grid>
                 <Grid item sm={12}>
                   <TextField
                     size="small"
                     label="Apelido Mercadoria"
-                    name="apMercadoria"
+                    name="nickname"
                     variant="outlined"
                     onChange={formik.handleChange}
-                    value={formik.values.apMercadoria}
+                    value={formik.values.nickname}
                     InputLabelProps={{
                       className: styles.inputLabel
                     }}
                     InputProps={{
                       className: styles.inputMedium
                     }}
-                    error={formik.touched.apMercadoria && Boolean(formik.errors.apMercadoria)}
-                    helperText={formik.touched.apMercadoria && formik.errors.apMercadoria}
+                    error={formik.touched.nickname && Boolean(formik.errors.nickname)}
+                    helperText={formik.touched.nickname && formik.errors.nickname}
                   />
                 </Grid>
                 <Grid item sm={6} md={6}>
                   <TextField
                     label="Descrição"
-                    name="txDescricao"
+                    name="description"
                     multiline
                     minRows={3}
                     maxRows={6}
                     variant="outlined"
                     onChange={formik.handleChange}
-                    value={formik.values.txDescricao}
+                    value={formik.values.description}
                     // style={{ width: '560px' }}
                     InputLabelProps={{
                       className: styles.inputLabel
@@ -146,20 +204,20 @@ const MercadoriaForm = () => {
                     inputProps={{
                       maxLength: 600
                     }}
-                    error={formik.touched.txDescricao && Boolean(formik.errors.txDescricao)}
-                    helperText={formik.touched.txDescricao && formik.errors.txDescricao}
+                    error={formik.touched.description && Boolean(formik.errors.description)}
+                    helperText={formik.touched.description && formik.errors.description}
                   />
                 </Grid>
                 <Grid item sm={6} md={6}>
                   <TextField
                     label="Descrição SAP"
-                    name="txDescricaoSap"
+                    name="descriptionSap"
                     multiline
                     minRows={3}
                     maxRows={6}
                     variant="outlined"
                     onChange={formik.handleChange}
-                    value={formik.values.txDescricaoSap}
+                    value={formik.values.descriptionSap}
                     // style={{ width: '560px' }}
                     fullWidth
                     InputLabelProps={{
@@ -168,91 +226,39 @@ const MercadoriaForm = () => {
                     inputProps={{
                       maxLength: 600
                     }}
-                    error={formik.touched.txDescricaoSap && Boolean(formik.errors.txDescricaoSap)}
-                    helperText={formik.touched.txDescricaoSap && formik.errors.txDescricaoSap}
+                    error={formik.touched.descriptionSap && Boolean(formik.errors.descriptionSap)}
+                    helperText={formik.touched.descriptionSap && formik.errors.descriptionSap}
+                    disabled={!!mercadoriaId}
                   />
                 </Grid>
-                {/* <Grid item sm={6}>
-                  <TextField
-                    size="small"
-                    label="Cod Unidade Med Comercial"
-                    name="cdUnidMedComerc"
-                    variant="outlined"
-                    onChange={formik.handleChange}
-                    value={formik.values.cdUnidMedComerc}
-                    fullWidth
-                    InputLabelProps={{
-                      className: styles.inputLabel
-                    }}
-                    InputProps={{
-                      className: styles.input
-                    }}
-                    error={formik.touched.cdUnidMedComerc
-                      && Boolean(formik.errors.cdUnidMedComerc)}
-                    helperText={formik.touched.cdUnidMedComerc
-                      && formik.errors.cdUnidMedComerc}
-                  />
-                </Grid> */}
-                {/* <Grid item sm={3} md={3}>
-                  <InputMask
-                    mask="9999.99.99"
-                    onChange={formik.handleChange}
-                    value={formik.values.cdNcmSh}
-                  >
-                    {() => (
-                      <TextField
-                        label="Cod NCM SH"
-                        name="cdNcmSh"
-                        variant="outlined"
-                        size="small"
-                        fullWidth
-                        InputLabelProps={{
-                          className: styles.inputLabel
-                        }}
-                        InputProps={{
-                          className: styles.input
-                        }}
-                        error={formik.touched.cdNcmSh && Boolean(formik.errors.cdNcmSh)}
-                        helperText={formik.touched.cdNcmSh && formik.errors.cdNcmSh}
-                      />
-                    )}
-                  </InputMask>
-                </Grid> */}
-                {/* <Grid item sm={3} md={3}>
-                  <TextField
-                    size="small"
-                    label="Cod Naladi SH"
-                    name="cdNaladiSh"
-                    variant="outlined"
-                    onChange={formik.handleChange}
-                    value={formik.values.cdNaladiSh}
-                    fullWidth
-                    InputLabelProps={{
-                      className: styles.inputLabel
-                    }}
-                    InputProps={{
-                      className: styles.input
-                    }}
-                    error={formik.touched.cdNaladiSh && Boolean(formik.errors.cdNaladiSh)}
-                    helperText={formik.touched.cdNaladiSh && formik.errors.cdNaladiSh}
-                  />
-                </Grid> */}
                 <Grid item>
-                  <AutocompleteInput4 />
+                  <AutocompleteInput4
+                    inputValue={mercadoriaId ? `${mercadoria.unit.cod} - ${mercadoria.unit.description} (${mercadoria.unit.initials})` : null}
+                    onChangeValue={handleChangeInputValue4}
+                  />
                 </Grid>
                 <div style={{ marginTop: '-13px', marginLeft: '8px' }}>
                   <Grid item>
-                    <AutocompleteInput3 />
+                    <AutocompleteInput3
+                      inputValue={mercadoriaId ? `${mercadoria.ncm.cod} - ${mercadoria.ncm.description}` : null}
+                      onChangeValue={handleChangeInputValue3}
+                    />
                   </Grid>
                 </div>
-                <div style={{ marginTop: '-13px', marginLeft: '8px' }}>
+                <div style={{ marginTop: '-5px', marginLeft: '8px' }}>
                   <Grid item>
-                    <AutocompleteInput2 />
+                    <AutocompleteInput2
+                      inputValue={mercadoriaId ? `${mercadoria.naladiSH.cod} - ${mercadoria.naladiSH.description}` : null}
+                      onChangeValue={handleChangeInputValue2}
+                    />
                   </Grid>
                 </div>
-                <div style={{ marginTop: '-6px', marginLeft: '8px' }}>
+                <div style={{ marginTop: '-5px', marginLeft: '8px' }}>
                   <Grid item>
-                    <AutocompleteInput />
+                    <AutocompleteInput
+                      inputValue={mercadoriaId ? `${mercadoria.naladiNCCA.cod} - ${mercadoria.naladiNCCA.description}` : null}
+                      onChangeValue={handleChangeInputValue}
+                    />
                   </Grid>
                 </div>
 
@@ -272,11 +278,11 @@ const MercadoriaForm = () => {
                 <TextField
                   size="small"
                   label="Valor Peso Liq Unitário"
-                  name="vlPesoLiqUnitario"
+                  name="vlUnitWeight"
                   placeholder="0.00000"
                   variant="outlined"
                   onChange={formik.handleChange}
-                  value={formik.values.vlPesoLiqUnitario}
+                  value={formik.values.vlUnitWeight}
                   InputProps={{
                     className: styles.input,
                     endAdornment: (
@@ -286,20 +292,20 @@ const MercadoriaForm = () => {
                   InputLabelProps={{
                     className: styles.inputLabel
                   }}
-                  error={formik.touched.vlPesoLiqUnitario
-                    && Boolean(formik.errors.vlPesoLiqUnitario)}
-                  helperText={formik.touched.vlPesoLiqUnitario && formik.errors.vlPesoLiqUnitario}
+                  error={formik.touched.vlUnitWeight
+                    && Boolean(formik.errors.vlUnitWeight)}
+                  helperText={formik.touched.vlUnitWeight && formik.errors.vlUnitWeight}
                 />
               </Grid>
               <Grid item sm={4}>
                 <TextField
                   size="small"
                   label="Valor Peso Liq Unit Apresentação"
-                  name="vlPesoLiqUnitarioApresentacao"
+                  name="vlUnitWeightPresentation"
                   placeholder="0.00000"
                   variant="outlined"
                   onChange={formik.handleChange}
-                  value={formik.values.vlPesoLiqUnitarioApresentacao}
+                  value={formik.values.vlUnitWeightPresentation}
                   InputProps={{
                     className: styles.input,
                     endAdornment: (
@@ -309,10 +315,10 @@ const MercadoriaForm = () => {
                   InputLabelProps={{
                     className: styles.inputLabel
                   }}
-                  error={formik.touched.vlPesoLiqUnitarioApresentacao
-                    && Boolean(formik.errors.vlPesoLiqUnitarioApresentacao)}
-                  helperText={formik.touched.vlPesoLiqUnitarioApresentacao
-                    && formik.errors.vlPesoLiqUnitarioApresentacao}
+                  error={formik.touched.vlUnitWeightPresentation
+                    && Boolean(formik.errors.vlUnitWeightPresentation)}
+                  helperText={formik.touched.vlUnitWeightPresentation
+                    && formik.errors.vlUnitWeightPresentation}
                 />
               </Grid>
               <Grid item sm={4}>

@@ -2,13 +2,14 @@ import styled from 'styled-components';
 
 export const SearchInput = styled.div<{
   hasFocus: boolean;
+  size?: string;
 }>`
   display: flex;
   align-items: center;
   background-color: white;
   border: ${({ hasFocus }) => (hasFocus ? '2px solid #2974b0' : '1px solid #c2c2c2')};
   border-radius: 4px;
-  width: 660px;
+  width: ${({ size }) => (size ? '300px' : '660px')};
   height: 50px;
   gap: 20px;
   font-family: 'DM Sans', sans-serif;

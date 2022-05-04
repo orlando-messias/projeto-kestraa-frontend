@@ -1,4 +1,4 @@
-import AutocompleteInput from 'components/AutocompleteInput/AutocompleteInput';
+// import AutocompleteInput from 'components/AutocompleteInput/AutocompleteInput';
 import Menu from '../../components/Menu/Menu';
 import { Container } from './MainPage.styles';
 
@@ -13,7 +13,7 @@ const MainPage = () => {
           <h2>Main Page</h2>
         </div>
         <div style={{ padding: '10px', marginTop: '20px' }}>
-          <AutocompleteInput />
+          {/* <AutocompleteInput /> */}
         </div>
       </div>
     </Container>

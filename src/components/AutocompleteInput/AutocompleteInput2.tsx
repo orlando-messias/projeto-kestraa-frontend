@@ -15,7 +15,12 @@ interface Item {
   description: string;
 }
 
-const AutocompleteInput2 = () => {
+interface AutocompleteInput4Props {
+  inputValue: string | null | undefined;
+  onChangeValue: (v: any) => any;
+}
+
+const AutocompleteInput2:React.FC<AutocompleteInput4Props> = ({ inputValue, onChangeValue }) => {
   const [inputSearch, setInputSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [teste, setTeste] = useState(false);
@@ -24,6 +29,14 @@ const AutocompleteInput2 = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [copyNccaItems, setCopyNccaItems] = useState<Item[] | null>([]);
   const [api, setApi] = useState('');
+
+  useEffect(() => {
+    if (inputValue) setInputSearch(inputValue);
+  }, [inputValue]);
+
+  useEffect(() => {
+    onChangeValue(inputSearch);
+  }, [inputSearch]);
 
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setQuery(e.target.value);
