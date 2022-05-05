@@ -8,7 +8,7 @@ import React, {
 import { CircularProgress } from '@mui/material';
 import ModalMercadoriaForm from 'pages/MercadoriaPage/components/ModalMercadoriaForm/ModalMercadoriaForm';
 import { DataItem, DataResult, SearchInput } from './Autocomplete.styles';
-import useBookSearch2 from './useBookSearch2';
+import useSearch from '../../hooks/useSearch';
 
 interface Item {
   cod: string;
@@ -31,6 +31,10 @@ const AutocompleteInput2:React.FC<AutocompleteInput4Props> = ({ inputValue, onCh
   const [api, setApi] = useState('');
 
   useEffect(() => {
+    setApi('naladi/sh');
+  }, []);
+
+  useEffect(() => {
     if (inputValue) setInputSearch(inputValue);
   }, [inputValue]);
 
@@ -45,11 +49,11 @@ const AutocompleteInput2:React.FC<AutocompleteInput4Props> = ({ inputValue, onCh
   }
 
   const {
-    books,
+    data,
     loading,
     error,
     hasMore
-  } = useBookSearch2(query, pageNumber);
+  } = useSearch(query, pageNumber, api);
 
   const observer = useRef<IntersectionObserver>();
 
@@ -66,7 +70,6 @@ const AutocompleteInput2:React.FC<AutocompleteInput4Props> = ({ inputValue, onCh
 
   const handleModal = () => {
     setQuery('xxx');
-    setApi('naladi/sh');
     setShowModal(!showModal);
   };
 
@@ -77,12 +80,12 @@ const AutocompleteInput2:React.FC<AutocompleteInput4Props> = ({ inputValue, onCh
   }, [inputSearch]);
 
   useEffect(() => {
-    if (books?.length) {
+    if (data?.length) {
       setTeste(true);
     } else {
       setTeste(false);
     }
-  }, [books]);
+  }, [data]);
 
   const handleClickAutocomplete = (value: any) => {
     setInputSearch(value);
@@ -130,10 +133,10 @@ const AutocompleteInput2:React.FC<AutocompleteInput4Props> = ({ inputValue, onCh
         <Search style={{ fontSize: '22px', cursor: 'pointer', color: '#2974b0' }} onClick={handleModal} />
       </SearchInput>
 
-      {books.length > 0 && (
+      {data.length > 0 && (
         <DataResult teste={teste}>
-          {books.map((value: any, index: number) => {
-            if (books.length === index + 1) {
+          {data.map((value: any, index: number) => {
+            if (data.length === index + 1) {
               return (
                 // eslint-disable-next-line react/no-array-index-key
                 <DataItem key={index} onClick={() => handleClickAutocomplete(value)}>

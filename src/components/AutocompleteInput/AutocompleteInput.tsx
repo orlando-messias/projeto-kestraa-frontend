@@ -8,7 +8,7 @@ import React, {
 import { CircularProgress } from '@mui/material';
 import ModalMercadoriaForm from 'pages/MercadoriaPage/components/ModalMercadoriaForm/ModalMercadoriaForm';
 import { DataItem, DataResult, SearchInput } from './Autocomplete.styles';
-import useBookSearch from './useBookSearch';
+import useSearch from '../../hooks/useSearch';
 
 interface Item {
   cod: string;
@@ -22,7 +22,6 @@ interface AutocompleteInput4Props {
 
 const AutocompleteInput: React.FC<AutocompleteInput4Props> = ({ inputValue, onChangeValue }) => {
   const [inputSearch, setInputSearch] = useState('');
-  // const [filterSearch, setFilterSearch] = useState<Item[] | null>([]);
   const [showModal, setShowModal] = useState(false);
   const [teste, setTeste] = useState(false);
   const [focus, setFocus] = useState(false);
@@ -30,6 +29,10 @@ const AutocompleteInput: React.FC<AutocompleteInput4Props> = ({ inputValue, onCh
   const [pageNumber, setPageNumber] = useState(1);
   const [copyNccaItems, setCopyNccaItems] = useState<Item[] | null>([]);
   const [api, setApi] = useState('');
+
+  useEffect(() => {
+    setApi('naladi/ncca');
+  }, []);
 
   useEffect(() => {
     if (inputValue) setInputSearch(inputValue);
@@ -46,11 +49,11 @@ const AutocompleteInput: React.FC<AutocompleteInput4Props> = ({ inputValue, onCh
   }
 
   const {
-    books,
+    data,
     loading,
     error,
     hasMore
-  } = useBookSearch(query, pageNumber);
+  } = useSearch(query, pageNumber, api);
 
   const observer = useRef<IntersectionObserver>();
 
@@ -67,7 +70,6 @@ const AutocompleteInput: React.FC<AutocompleteInput4Props> = ({ inputValue, onCh
 
   const handleModal = () => {
     setQuery('xxx');
-    setApi('naladi/ncca');
     setShowModal(!showModal);
   };
 
@@ -78,12 +80,12 @@ const AutocompleteInput: React.FC<AutocompleteInput4Props> = ({ inputValue, onCh
   }, [inputSearch]);
 
   useEffect(() => {
-    if (books?.length) {
+    if (data?.length) {
       setTeste(true);
     } else {
       setTeste(false);
     }
-  }, [books]);
+  }, [data]);
 
   const handleClickAutocomplete = (value: any) => {
     setInputSearch(value);
@@ -92,19 +94,16 @@ const AutocompleteInput: React.FC<AutocompleteInput4Props> = ({ inputValue, onCh
 
   const clearText = () => {
     setInputSearch('');
-    // setFilterSearch([]);
   };
 
   const handleChangeValue = (value: string) => {
     setInputSearch(value);
-    // setFilterSearch([]);
     handleModal();
   };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <SearchInput hasFocus={focus}>
-        {/* <Search className="icon" /> */}
         <input
           type="text"
           placeholder="Codigo Naladi NCCA"
@@ -131,10 +130,10 @@ const AutocompleteInput: React.FC<AutocompleteInput4Props> = ({ inputValue, onCh
         <Search style={{ fontSize: '22px', cursor: 'pointer', color: '#2974b0' }} onClick={handleModal} />
       </SearchInput>
 
-      {books.length > 0 && (
+      {data.length > 0 && (
         <DataResult teste={teste}>
-          {books.map((value: any, index: number) => {
-            if (books.length === index + 1) {
+          {data.map((value: any, index: number) => {
+            if (data.length === index + 1) {
               return (
                 // eslint-disable-next-line react/no-array-index-key
                 <DataItem key={index} onClick={() => handleClickAutocomplete(value)}>

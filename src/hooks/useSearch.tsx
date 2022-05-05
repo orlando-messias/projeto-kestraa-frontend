@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export default function useBookSearch4(query: string, pageNumber: Number) {
+export default function useSearch(query: string, pageNumber: Number, api: string) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(true);
-  const [books, setBooks] = useState<any | null>([]);
+  const [data, setData] = useState<any | null>([]);
   const [hasMore, setHasMore] = useState(false);
 
   useEffect(() => {
-    setBooks([]);
+    setData([]);
   }, [query]);
 
   useEffect(() => {
@@ -18,12 +18,13 @@ export default function useBookSearch4(query: string, pageNumber: Number) {
 
     axios({
       method: 'GET',
-      url: 'http://172.20.10.177:5502/unit/measurement',
-      params: { desc: query, page: pageNumber },
-      // eslint-disable-next-line no-return-assign
-      cancelToken: new axios.CancelToken((c) => cancel = c)
+      url: `http://172.20.10.177:5502/${api}`,
+      params: api === 'unit/measurement' ? { desc: query, page: pageNumber } : { cod: query, page: pageNumber },
+      cancelToken: new axios.CancelToken((c) => {
+        cancel = c;
+      })
     }).then((res) => {
-      setBooks((prevBooks: any) => [...prevBooks, ...res.data.data.map((b: any) => `${b.cod} - ${b.description}`)]);
+      setData((prevData: any) => [...prevData, ...res.data.data.map((b: any) => `${b.cod} - ${b.description}`)]);
       setHasMore(res.data.data.length > 0);
       setLoading(false);
     }).catch((e) => {
@@ -36,7 +37,7 @@ export default function useBookSearch4(query: string, pageNumber: Number) {
   return {
     loading,
     error,
-    books,
+    data,
     hasMore
   };
 }
