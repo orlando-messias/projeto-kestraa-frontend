@@ -19,6 +19,7 @@ import AutocompleteInput from 'components/AutocompleteInput/AutocompleteInput';
 import AutocompleteInput2 from 'components/AutocompleteInput/AutocompleteInput2';
 import AutocompleteInput3 from 'components/AutocompleteInput/AutocompleteInput3';
 import AutocompleteInput4 from 'components/AutocompleteInput/AutocompleteInput4';
+import mercadoriaApi from '../../../services/mercadoriaApi';
 import {
   Container, Content, Header, useStyles
 } from './MercadoriaForm.styles';
@@ -74,7 +75,13 @@ const MercadoriaForm = () => {
     vlUnitWeightPresentation: yup.string().required('Peso Líquido Unit Apresentação obrigatório'),
   });
 
-  const update = async (values: any) => {
+  const styles = useStyles();
+
+  const { mercadoriaId } = useParams();
+
+  const update = async (values: Mercadoria) => {
+    await mercadoriaApi().patch(`/${mercadoriaId}`, values)
+      .then(() => console.log('SUCCESS'));
     console.log('Mercadoria ', values);
   };
 
@@ -87,10 +94,6 @@ const MercadoriaForm = () => {
       update(values);
     },
   });
-
-  const styles = useStyles();
-
-  const { mercadoriaId } = useParams();
 
   useEffect(() => {
     axios({
@@ -108,13 +111,14 @@ const MercadoriaForm = () => {
     } else {
       formik.values.unit.cod = value;
     }
-    // setMercadoria((prev) => ({ ...prev, unit: { ...prev.unit, description: value } }));
   };
 
   const handleChangeInputValue3 = (value: string) => {
     if (value.indexOf('-') > -1) {
-      const newValue = value.substring(0, value.indexOf(' -'));
-      formik.values.ncm.cod = newValue;
+      const cod = value.substring(0, value.indexOf(' -'));
+      const description = value.substring(value.indexOf('- ') + 2);
+      formik.values.ncm.cod = cod;
+      formik.values.ncm.description = description;
     } else {
       formik.values.ncm.cod = value;
     }
@@ -122,8 +126,10 @@ const MercadoriaForm = () => {
 
   const handleChangeInputValue2 = (value: string) => {
     if (value.indexOf('-') > -1) {
-      const newValue = value.substring(0, value.indexOf(' -'));
-      formik.values.naladiSH.cod = newValue;
+      const cod = value.substring(0, value.indexOf(' -'));
+      const description = value.substring(value.indexOf('- ') + 2);
+      formik.values.naladiSH.cod = cod;
+      formik.values.naladiSH.description = description;
     } else {
       formik.values.naladiSH.cod = value;
     }
@@ -131,8 +137,10 @@ const MercadoriaForm = () => {
 
   const handleChangeInputValue = (value: string) => {
     if (value.indexOf('-') > -1) {
-      const newValue = value.substring(0, value.indexOf(' -'));
-      formik.values.naladiNCCA.cod = newValue;
+      const cod = value.substring(0, value.indexOf(' -'));
+      const description = value.substring(value.indexOf('- ') + 2);
+      formik.values.naladiNCCA.cod = cod;
+      formik.values.naladiNCCA.description = description;
     } else {
       formik.values.naladiNCCA.cod = value;
     }
