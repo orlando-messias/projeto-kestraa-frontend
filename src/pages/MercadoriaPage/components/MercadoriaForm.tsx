@@ -79,7 +79,7 @@ const MercadoriaForm = () => {
 
   const { mercadoriaId } = useParams();
 
-  const update = async (values: Mercadoria) => {
+  const update = async (values: any) => {
     await mercadoriaApi().patch(`/${mercadoriaId}`, values)
       .then(() => console.log('SUCCESS'));
     console.log('Mercadoria ', values);
@@ -104,45 +104,12 @@ const MercadoriaForm = () => {
     });
   }, [mercadoriaId]);
 
-  const handleChangeInputValue4 = (value: string) => {
-    if (value.indexOf('-') > -1) {
-      const newValue = value.substring(0, value.indexOf(' -'));
-      formik.values.unit.cod = newValue;
-    } else {
-      formik.values.unit.cod = value;
-    }
-  };
-
-  const handleChangeInputValue3 = (value: string) => {
+  const handleChangeInputValue = (item: string, value: string) => {
     if (value.indexOf('-') > -1) {
       const cod = value.substring(0, value.indexOf(' -'));
-      const description = value.substring(value.indexOf('- ') + 2);
-      formik.values.ncm.cod = cod;
-      formik.values.ncm.description = description;
+      setMercadoria({ ...formik.values, [item]: { cod, description: '' } });
     } else {
-      formik.values.ncm.cod = value;
-    }
-  };
-
-  const handleChangeInputValue2 = (value: string) => {
-    if (value.indexOf('-') > -1) {
-      const cod = value.substring(0, value.indexOf(' -'));
-      const description = value.substring(value.indexOf('- ') + 2);
-      formik.values.naladiSH.cod = cod;
-      formik.values.naladiSH.description = description;
-    } else {
-      formik.values.naladiSH.cod = value;
-    }
-  };
-
-  const handleChangeInputValue = (value: string) => {
-    if (value.indexOf('-') > -1) {
-      const cod = value.substring(0, value.indexOf(' -'));
-      const description = value.substring(value.indexOf('- ') + 2);
-      formik.values.naladiNCCA.cod = cod;
-      formik.values.naladiNCCA.description = description;
-    } else {
-      formik.values.naladiNCCA.cod = value;
+      setMercadoria({ ...formik.values, [item]: { cod: value, description: '' } });
     }
   };
 
@@ -241,31 +208,31 @@ const MercadoriaForm = () => {
                 </Grid>
                 <Grid item>
                   <AutocompleteInput4
-                    inputValue={mercadoriaId ? `${mercadoria.unit.cod} - ${mercadoria.unit.description} (${mercadoria.unit.initials})` : null}
-                    onChangeValue={handleChangeInputValue4}
+                    inputValue={(mercadoriaId && mercadoria.unit.description) ? `${mercadoria.unit.cod} - ${mercadoria.unit.description} (${mercadoria.unit.initials})` : null}
+                    onChangeValue={(value) => handleChangeInputValue('unit', value)}
                   />
                 </Grid>
                 <div style={{ marginTop: '-13px', marginLeft: '8px' }}>
                   <Grid item>
                     <AutocompleteInput3
-                      inputValue={mercadoriaId ? `${mercadoria.ncm.cod} - ${mercadoria.ncm.description}` : null}
-                      onChangeValue={handleChangeInputValue3}
+                      inputValue={(mercadoriaId && mercadoria.ncm.description) ? `${mercadoria.ncm.cod} - ${mercadoria.ncm.description}` : null}
+                      onChangeValue={(value) => handleChangeInputValue('ncm', value)}
                     />
                   </Grid>
                 </div>
                 <div style={{ marginTop: '-5px', marginLeft: '8px' }}>
                   <Grid item>
                     <AutocompleteInput2
-                      inputValue={mercadoriaId ? `${mercadoria.naladiSH.cod} - ${mercadoria.naladiSH.description}` : null}
-                      onChangeValue={handleChangeInputValue2}
+                      inputValue={(mercadoriaId && mercadoria.naladiSH.description) ? `${mercadoria.naladiSH.cod} - ${mercadoria.naladiSH.description}` : null}
+                      onChangeValue={(value) => handleChangeInputValue('naladiSH', value)}
                     />
                   </Grid>
                 </div>
                 <div style={{ marginTop: '-5px', marginLeft: '8px' }}>
                   <Grid item>
                     <AutocompleteInput
-                      inputValue={mercadoriaId ? `${mercadoria.naladiNCCA.cod} - ${mercadoria.naladiNCCA.description}` : null}
-                      onChangeValue={handleChangeInputValue}
+                      inputValue={(mercadoriaId && mercadoria.naladiNCCA.description) ? `${mercadoria.naladiNCCA.cod} - ${mercadoria.naladiNCCA.description}` : null}
+                      onChangeValue={(value) => handleChangeInputValue('naladiNCCA', value)}
                     />
                   </Grid>
                 </div>
